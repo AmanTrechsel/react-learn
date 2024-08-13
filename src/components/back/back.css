@@ -1,0 +1,22 @@
+.back {
+  border-radius: 100%;
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  width: 39px;
+  height: 39px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.back img {
+  width: 24px;
+  height: 24px;
+  margin-right: 1px;
+  opacity: 75%;
+}
+
+.back:active img {
+  opacity: 100%;
+}
