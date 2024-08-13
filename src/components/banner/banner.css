@@ -1,4 +1,15 @@
 .banner {
   display: flex;
   justify-content: space-between;
+  align-items: baseline;
 }
+
+h1 {
+  font-family: var(--font-family);
+  color: var(--text-color);
+  font-size: 16px;
+  font-weight: 600;
+  text-align: center;
+  margin-right: 35px;
+}
+

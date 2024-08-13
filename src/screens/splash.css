@@ -1,0 +1,22 @@
+.splashScreen {
+    width: 100%;
+    height: 100dvh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.splashScreen img {
+    width: 131px;
+    height: 131px;
+    animation-name: splashHeartbeat;
+    animation-duration: 5s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+
+@keyframes splashHeartbeat {
+    0% {scale: 1;}
+    50% {scale: 1.1;}
+    100% {scale: 1;}
+}

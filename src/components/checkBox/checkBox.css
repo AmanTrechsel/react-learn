@@ -1,0 +1,26 @@
+.checkBox {
+    height: 20px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+}
+
+.checkBox input {
+    width: 15px;
+    height: 15px;
+}
+
+.checkBox button {
+    cursor: pointer;
+    border: none;
+    display: inline;
+    text-align: left;
+    background-color: transparent;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 12px;
+    padding: 0;
+}

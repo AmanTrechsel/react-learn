@@ -1,9 +1,13 @@
 :root {
   --primary: #0560fd;
+  --secondary: #124ac4;
   --text-color: #000000;
   --border-color: #d4d4d4;
-  --place-holder-bac: #f6f6f6;
+  --placeholder-background: #f6f6f6;
+  --placeholder-text: #969696;
   --background: #ffffff;
+
+  --font-family: "Poppins", sans-serif;
 }
 
 * {
@@ -11,9 +15,10 @@
 }
 
 body {
-  font-family: "Poppins", sans-serif;
-  margin: 20px;
+  font-family: var(--font-family);
+  margin: 0;
   padding: 0;
+  overflow: hidden;
 }
 
 h1 {
