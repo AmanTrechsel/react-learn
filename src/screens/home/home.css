@@ -1,0 +1,157 @@
+.homeScreen {
+    height: 95dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px;
+    padding-bottom: 0;
+    margin-bottom: 0;
+    animation-name: screenLoad;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+}
+
+.homeContent {
+    height: 100%;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+}
+
+.homeHeader {
+    display: flex;
+    flex-direction: column;
+    justify-content: baseline;
+}
+
+.homeHeaderMain {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.homeHello {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+.homeHello img {
+    width: 46px;
+    height: 46px;
+    border-radius: 100%;
+    object-fit: cover;
+}
+
+.homeHelloText {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.burgerMenu {
+    width: 28px;
+    height: 28px;
+    aspect-ratio: 1/1;
+    border: 1px solid var(--border-color);
+    border-radius: 100%;
+    background-color: var(--background);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: border-color 0.1s, background-color 0.1s;
+}
+
+.burgerMenu:hover {
+    border: 1px solid var(--text-color);
+    background-color: var(--placeholder-background);
+}
+
+.burgerMenu:active {
+    border: 1px solid var(--primary);
+    background-color: var(--border-color);
+}
+
+.burgerMenu img {
+    width: 12px;
+    height: 10px;
+    aspect-ratio: 1/1;
+}
+
+.homeHelloText p, .homeHelloText h2 {
+    font-family: var(--font-family);
+    margin: 0;
+    height: 13px;
+}
+
+.homeHelloText p {
+    color: var(--text-color-tertiary);
+    font-size: 12px;
+    font-weight: 400;
+}
+
+.homeHelloText h2 {
+    color: var(--text-color);
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+.homeFilters {
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+
+
+.homeTaskTitle {
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.todoItems {
+    overflow: auto;
+    height: 80dvh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+}
+
+.homeFooter {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.addTodoItem {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    margin: 0;
+    width: 53px;
+    height: 53px;
+    background-color: var(--primary);
+    border: none;
+    aspect-ratio: 1/1;
+}
+
+.addTodoItem:hover {
+    background-color: var(--secondary);
+}
+
+.addTodoItem:active {
+    background-color: var(--primary);
+}

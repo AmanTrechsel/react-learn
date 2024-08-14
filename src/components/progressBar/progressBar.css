@@ -1,0 +1,27 @@
+.progressBar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.progressBarBackground {
+    width: 144px;
+    height: 4px;
+    background-color: var(--border-color-secondary);
+    border-radius: 5px;
+}
+
+.progressBarFill {
+    height: 4px;
+    background-color: var(--primary);
+    border-radius: 5px;
+}
+
+.progressBarPercentage {
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 12px;
+    color: var(--text-color);
+    margin: 0;
+    margin-left: 8px;
+}

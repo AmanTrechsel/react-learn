@@ -1,0 +1,182 @@
+.todoItem {
+    width: 100%;
+    padding: 14px;
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.todoItemMain, .todoItemSide {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 2px;
+    width: 90%;
+}
+
+.todoItemSide {
+    align-items: end;
+    width: 10%;
+}
+
+.dates {
+    margin-top: 6px;
+    display: flex;
+    flex-direction: row;
+    gap: 12px;
+}
+
+.date {
+    display: flex;
+    flex-direction: row;
+    gap: 4px;
+}
+
+.dateIcon {
+    width: 16px;
+    height: 16px;
+}
+
+.dateTitle {
+    margin: 0;
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 12px;
+    text-overflow: ellipsis;
+    color: var(--text-color);
+}
+
+
+.todoTitle {
+    font-family: var(--font-family);
+    font-size: 16px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+    text-align: start;
+}
+
+.categoryDesign, .categoryCode, .categoryTest, .categoryImplement, .categoryRefactor, .todoState {
+    font-family: var(--font-family);
+    font-size: 12px;
+    font-weight: 500;
+    margin: 0;
+    padding: 0;
+    text-align: start;
+}
+
+.todoState {
+    margin-top: 4px;
+    color: var(--text-color-secondary);
+}
+
+.categoryDesign {
+    color: var(--category-design);
+}
+
+.categoryCode {
+    color: var(--category-code);
+}
+
+.categoryTest {
+    color: var(--category-test);
+}
+
+.categoryImplement {
+    color: var(--category-implement);
+}
+
+.categoryRefactor {
+    color: var(--category-refactor);
+}
+
+.todoMore {
+    margin-top: 10px;
+    background-color: transparent;
+    border: 1px solid var(--border-color);
+    border-radius: 100%;
+    width: 20px;
+    height: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: border-color 0.1s;
+}
+
+.todoMore:hover {
+    border-color: var(--text-color);
+}
+
+.todoMore:active {
+    border-color: var(--primary);
+}
+
+.todoMoreIcon {
+    width: 10px;
+}
+
+.todoPriorityWrapper {
+    max-height: 66px;
+    background-color: var(--primary);
+    padding: 5px 20px;
+    border-radius: 41px;
+}
+
+.todoPriorityWrapper.Low {
+    background-color: var(--category-implement);
+}
+
+.todoPriorityWrapper.Medium {
+    background-color: var(--category-code);
+}
+
+.todoPriorityWrapper.Top {
+    background-color: var(--category-refactor);
+}
+
+.todoPriority {
+    font-family: var(--font-family);
+    font-size: 12px;
+    font-weight: 400;
+    color: var(--background);
+    margin: 0;
+    text-align: center;
+}
+
+.assignedUsers {
+    margin-top: 4px;
+    height: 29px;
+    display: flex;
+    justify-content: start;
+}
+
+.addAssignedUser {
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 100%;
+    margin: 0;
+    width: 29px;
+    height: 29px;
+    background-color: var(--primary);
+    border: none;
+    aspect-ratio: 1/1;
+}
+
+.addAssignedUser:hover {
+    background-color: var(--secondary);
+}
+
+.addAssignedUser:active {
+    background-color: var(--primary);
+}
+
+.addAssignedUser img {
+    margin: 0;
+    height: 11px;
+    width: 11px;
+}

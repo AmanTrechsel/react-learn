@@ -1,0 +1,49 @@
+.landingScreen {
+    height: 95dvh;
+    margin: 20px;
+    animation-name: screenLoad;
+    animation-duration: 0.5s;
+    animation-timing-function: ease-in-out;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.landingScreenBody {
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 20px;
+    height: 100%;
+}
+
+.landingLogo {
+    aspect-ratio: 1/1;
+    min-height: 32px;
+    height: 80%;
+    animation-name: logo;
+    animation-duration: 6s;
+    animation-timing-function: ease-in-out;
+    animation-iteration-count: infinite;
+}
+
+.landingButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+@keyframes screenLoad {
+    0% {opacity: 0;}
+    100% {opacity: 1;}
+}
+
+@keyframes logo {
+    0% {opacity: 0.95; scale: 1;}
+    25% {opacity: 0.9;}
+    50% {scale: 0.9;}
+    75% {opacity: 1;}
+    100% {opacity: 0.95; scale: 1;}
+}

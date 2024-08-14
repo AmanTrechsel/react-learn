@@ -1,0 +1,10 @@
+.navigationButton {
+    border: none;
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    width: 24px;
+    height: 24px;
+    aspect-ratio: 1/1;
+    cursor: pointer;
+}

@@ -21,17 +21,6 @@
     display: inline-block; 
 }
 
-.inputFieldWrapper button { 
-    width: 24px;
-    height: 24px;
-    position: absolute; 
-    top: 12px; 
-    right: 24px; 
-    border: none; 
-    background-color: transparent; 
-    cursor: pointer; 
-}
-
 #inputFieldText {
     width: 100%;
     font-weight: 400;
@@ -49,5 +38,19 @@
 }
 
 .inputFieldTextWithButton {
-    padding-right: 60px !important;
+    padding-right: 50px !important;
+}
+
+.passwordButton {
+    width: 24px;
+    height: 24px;
+    position: absolute; 
+    top: 14px; 
+    right: 20px; 
+    border: none; 
+    background-color: transparent; 
+    cursor: pointer; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }

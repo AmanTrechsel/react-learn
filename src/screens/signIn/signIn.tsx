@@ -1,18 +1,19 @@
 import React from "react";
-import Banner from "../components/banner/banner";
-import InputField from "../components/inputField/inputField";
-import CheckBox from "../components/checkBox/checkBox";
-import Button from "../components/button/button";
+import Banner from "../../components/banner/banner";
+import InputField from "../../components/inputField/inputField";
+import CheckBox from "../../components/checkBox/checkBox";
+import Button from "../../components/button/button";
+import openURL from "../../utils/openURL";
 
 import "./signIn.css";
 
-const { default: googleSvg } = require("../assets/google.svg") as { default: string };
-const { default: facebookSvg } = require("../assets/facebook.svg") as { default: string };
+const { default: googleSvg } = require("../../assets/google.svg") as { default: string };
+const { default: facebookSvg } = require("../../assets/facebook.svg") as { default: string };
 
 export default function SignInScreen() {
   return (
     <div className="signInScreen">
-      <Banner text="Sign In" />
+      <Banner text="Sign In" url="/landing" />
       <div className="content">
         <InputField title="E-mail" placeholder="Enter your email" password={false} />
         <InputField title="Password" placeholder="Enter your password" password={true} />
@@ -21,7 +22,7 @@ export default function SignInScreen() {
           <a>Forgot Password?</a>
         </div>
         <div className="buttons">
-          <Button title="Sign In Now" />
+          <Button title="Sign In Now" onclick={() => {openURL("./home");}} />
           <h3>Or with</h3>
           <Button title="Login with Facebook" img={facebookSvg}/>
           <Button title="Login with Google" inverted={true} img={googleSvg}/>

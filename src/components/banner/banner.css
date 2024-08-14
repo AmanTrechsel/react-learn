@@ -10,6 +10,10 @@ h1 {
   font-size: 16px;
   font-weight: 600;
   text-align: center;
-  margin-right: 35px;
+}
+
+.padding {
+  width: 39px;
+  height: 39px;
 }
 

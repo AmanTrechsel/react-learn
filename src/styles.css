@@ -1,11 +1,22 @@
 :root {
   --primary: #0560fd;
   --secondary: #124ac4;
+  --tertiary: #CC00FF;
   --text-color: #000000;
+  --text-color-secondary: #6E6E6E;
+  --text-color-tertiary: #535353;
   --border-color: #d4d4d4;
+  --border-color-secondary: #d9d9d9;
   --placeholder-background: #f6f6f6;
   --placeholder-text: #969696;
+  --placeholder-search: #DADADA;
   --background: #ffffff;
+
+  --category-design: var(--primary);
+  --category-code: var(--tertiary);
+  --category-test: #2fa343;
+  --category-implement: #eea929;
+  --category-refactor: #f5335d;
 
   --font-family: "Poppins", sans-serif;
 }
@@ -15,6 +26,7 @@
 }
 
 body {
+  background-color: var(--background);
   font-family: var(--font-family);
   margin: 0;
   padding: 0;

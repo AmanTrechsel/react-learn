@@ -1,0 +1,9 @@
+.userIcon {
+    border-radius: 100%;
+    margin: 0;
+    width: 29px;
+    height: 29px;
+    aspect-ratio: 1/1;
+    margin-right: -11px;
+    object-fit: cover;
+}

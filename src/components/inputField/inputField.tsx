@@ -35,7 +35,7 @@ export default function InputField({ title, placeholder, password }: { title: st
             return (
                 <div className="inputFieldWrapper">
                     <input ref={inputField} className="inputFieldTextWithButton" id="inputFieldText" type="password" placeholder={placeholder} />
-                    <button onClick={changeVisibility}>
+                    <button className="passwordButton" onClick={changeVisibility}>
                         {getVisibilityIcon()}
                     </button>
                 </div>
