@@ -22,7 +22,7 @@ export default function SignInScreen() {
           <a>Forgot Password?</a>
         </div>
         <div className="buttons">
-          <Button title="Sign In Now" onclick={() => {openURL("./home");}} />
+          <Button title="Sign In Now" onClick={() => {openURL("./home");}} />
           <h3>Or with</h3>
           <Button title="Login with Facebook" img={facebookSvg}/>
           <Button title="Login with Google" inverted={true} img={googleSvg}/>

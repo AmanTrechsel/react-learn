@@ -21,8 +21,8 @@ export default function LandingScreen() {
                 <Banner text="ToDoX" back={false} />
                 <img src={logoSvg} alt="Logo" className="landingLogo" />
                 <div className="landingButtons">
-                    <Button title="Sign In" onclick={signin} />
-                    <Button title="Sign Up" onclick={signup} inverted={true} />
+                    <Button title="Sign In" onClick={signin} />
+                    <Button title="Sign Up" onClick={signup} inverted={true} />
                 </div>
             </div>
         </div>

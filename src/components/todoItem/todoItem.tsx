@@ -3,11 +3,18 @@ import { TodoPriority } from "./todoPriority";
 import { TodoState } from "./todoState";
 import ProgressBar from "../progressBar/progressBar";
 import UserIcon from "../userIcon/userIcon";
+import Todo from "../../classes/todo/todo";
 
 import "./todoItem.css";
 
-export default function TodoItem({category, progress, priority, title, startDate, goalDate}: {category: TodoCategory, progress: number, priority: TodoPriority, title: string, startDate: Date, goalDate: Date}) {
-    const state = progress > 0 ? progress >= 100 ? TodoState.Completed : TodoState.InProgress : TodoState.NotStarted;
+export default function TodoItem({todo}: {todo: Todo}) {
+    const title = todo.getTitle();
+    const category = todo.getCategory();
+    const priority = todo.getPriority();
+    const progress = todo.getProgress();
+    const startDate = todo.getStartDate();
+    const goalDate = todo.getGoalDate();
+    const state = todo.getState()
 
     const { default: startIconSvg } = require("../../assets/calendar.svg") as { default: string };
     const { default: goalIconSvg } = require("../../assets/flag.svg") as { default: string };
