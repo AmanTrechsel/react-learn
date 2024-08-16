@@ -1,18 +1,20 @@
+import { useNavigate } from "react-router-dom";
 import Banner from "../../components/banner/banner";
 import Button from "../../components/button/button";
-import openURL from "../../utils/openURL";
 
 import "./landing.css";
 
 export default function LandingScreen() {
     const { default: logoSvg } = require("../../assets/logo.svg") as { default: string };
+    
+    const navigate = useNavigate();
 
     function signup() {
-        openURL("/sign-up");
+        navigate("/sign-up");
     }
 
     function signin() {
-        openURL("/sign-in");
+        navigate("/sign-in");
     }
 
     return (

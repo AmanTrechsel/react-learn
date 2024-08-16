@@ -11,6 +11,111 @@
     animation-timing-function: ease-in-out;
 }
 
+.homeContentWrapper {
+    height: 100%;
+    width: 100%;
+    max-width: 800px;
+    display: flex;
+    justify-content: end;
+}
+
+.homeOverlay {
+    top: 0;
+    left: 0;
+    position: absolute;
+    display: block;
+    width: 100%;
+    height: 100%;
+    background-color: var(--overlay);
+    opacity: 0;
+    transition: opacity 0.25s;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.homeOverlay.show {
+    opacity: 1;
+    pointer-events: all;
+}
+
+.homeBurgerContent {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.homeBurgerButtons {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    gap: 10px;
+}
+
+.version { 
+    font-family: var(--font-family);
+    color: var(--text-color-tertiary);
+    font-size: 12px;
+    font-weight: 300;
+    padding: 0;
+    margin: 0;
+    text-align: end;
+}
+
+.homeBurgerMenu {
+    top: 0;
+    right: 0;
+    padding: 12px;
+    border-left: 2px solid var(--background);
+    border-top-left-radius: 4px;
+    border-bottom-left-radius: 4px;
+    transform-origin: 50%;
+    background-color: var(--placeholder-background);
+    z-index: 2;
+    position: absolute;
+    height: 100%;
+    width: 0;
+    max-width: 800px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    transition: width 0.25s, opacity 0.25s;
+    opacity: 0;
+}
+
+.homeBurgerMenu.show {
+    width: 50%;
+    opacity: 1;
+}
+
+.homeBurgerButton {
+    background-color: var(--placeholder-background);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 8px;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.homeBurgerButton.signout {
+    color: var(--category-refactor);
+    border: 1px solid var(--category-refactor);
+}
+
+.homeBurgerButton:hover {
+    background-color: var(--primary);
+    color: var(--background);
+    border: 1px solid var(--background);
+}
+    
+.homeBurgerButton.signout:hover {
+    background-color: var(--category-refactor);
+}
+
 .homeContent {
     height: 100%;
     width: 100%;
@@ -49,6 +154,7 @@
 
 .homeHelloText {
     margin-top: 6px;
+    margin-right: 20px;
     display: flex;
     flex-direction: column;
     gap: 0;
@@ -154,4 +260,82 @@
 
 .addTodoItem:active {
     background-color: var(--primary);
+}
+
+.createTask {
+    padding: 10px 20px;
+    height: 0;
+    width: 75%;
+    position: absolute;
+    background-color: var(--background);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    bottom: 90px;
+    left: 12.5%;
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    transition: height 0.25s, opacity 0.25s;
+    pointer-events: none;
+    gap: 10px;
+}
+
+.createTask.show {
+    height: fit-content;
+    opacity: 1;
+    pointer-events: all;
+}
+
+.taskLabel {
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 16px;
+    text-align: center;
+    font-weight: 500;
+}
+
+.taskInput {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.createTaskInput {
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    padding: 4px;
+    margin: 0 5px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-size: 14px;
+    font-weight: 400;
+    text-align: center;
+}
+
+.createTaskInput::placeholder {
+    color: var(--placeholder-text);
+}
+
+.groupedTaskInput {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.createTaskButton {
+    background-color: var(--placeholder-background);
+    border: 1px solid var(--border-color);
+    padding: 10px;
+    border-radius: 8px;
+    font-family: var(--font-family);
+    color: var(--text-color);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+.createTaskButton:hover {
+    background-color: var(--primary);
+    color: var(--background);
+    border: 1px solid var(--background);
 }

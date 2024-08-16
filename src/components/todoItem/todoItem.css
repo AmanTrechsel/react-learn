@@ -153,6 +153,63 @@
     justify-content: start;
 }
 
+.assignedUsersDropdown, .todoMoreDropdown {
+    position: relative;
+    display: none;
+    height: 0;
+    width: 40%;
+    background-color: var(--placeholder-background);
+    border-radius: 10px;
+}
+
+.assignedUsersDropdown.open, .todoMoreDropdown.open {
+    display: block;
+    height: fit-content;
+    padding: 4px 2px;
+}
+
+.todoMoreDropdown {
+    width: 100%;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.todoMoreDropdown.open {
+    display: flex;
+}
+
+.nonAssignedUser, .moreButton {
+    background-color: var(--background);
+    border: none;
+    border-radius: 10px;
+    width: 100%;
+    padding: 10px;
+    color: var(--text-color);
+    font-family: var(--font-family);
+    font-weight: 400;
+    font-size: 12px;
+    cursor: pointer;
+    transition: background-color 0.1s, color 0.1s;
+}
+
+.moreButton {
+    padding: 5px;
+}
+
+.nonAssignedUser:hover, .moreButton:hover {
+    background-color: var(--primary);
+    color: var(--background);
+}
+
+.moreButton.delete {
+    color: var(--category-refactor);
+}
+
+.moreButton.delete:hover {
+    color: var(--background);
+    background-color: var(--category-refactor);
+}
+
 .addAssignedUser {
     cursor: pointer;
     display: flex;

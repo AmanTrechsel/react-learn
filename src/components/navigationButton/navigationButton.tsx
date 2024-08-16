@@ -2,15 +2,11 @@ import { useState } from "react";
 
 import "./navigationButton.css"
 
-export default function NavigationButton({src, selectedSrc, selected}: {src: string, selectedSrc?: string, selected?: boolean}) {
+export default function NavigationButton({src, selectedSrc, selected, onClick = () => {}}: {src: string, selectedSrc?: string, selected?: boolean, onClick?: () => void}) {
     const [isSelected, setSelected] = useState(selected);
     
-    function toggleSelected() {
-        setSelected(!isSelected);
-    }
-    
     return (
-        <button className="navigationButton" onClick={toggleSelected}>
+        <button className="navigationButton" onClick={onClick}>
             <img src={isSelected ? selectedSrc : src} />
         </button>
     )

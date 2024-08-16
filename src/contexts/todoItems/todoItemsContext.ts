@@ -1,3 +1,3 @@
 import { createContext } from 'react';
 
-export const TodoItemsContext = createContext(1);
+export const TodoItemsContext = createContext<any>([]);

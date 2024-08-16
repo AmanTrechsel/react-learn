@@ -5,7 +5,7 @@ import "./inputField.css";
 const { default: visibilitySvg } = require("../../assets/visibility.svg") as { default: string };
 const { default: visibilityOffSvg } = require("../../assets/visibilityOff.svg") as { default: string };
 
-export default function InputField({ title, placeholder, password }: { title: string, placeholder: string, password: boolean }) {
+export default function InputField({ title, placeholder, password = false, onChange = () => {} }: { title: string, placeholder: string, password?: boolean, onChange?: (value: string) => void }) {
     const [passwordShown, setPasswordShown] = useState(false);
     const inputField = useRef<any>();
     
@@ -34,7 +34,7 @@ export default function InputField({ title, placeholder, password }: { title: st
         if (password) {
             return (
                 <div className="inputFieldWrapper">
-                    <input ref={inputField} className="inputFieldTextWithButton" id="inputFieldText" type="password" placeholder={placeholder} />
+                    <input ref={inputField} className="inputFieldTextWithButton" id="inputFieldText" type="password" placeholder={placeholder} onChange={(event) => { onChange(event.target.value) }} />
                     <button className="passwordButton" onClick={changeVisibility}>
                         {getVisibilityIcon()}
                     </button>
@@ -44,7 +44,7 @@ export default function InputField({ title, placeholder, password }: { title: st
         else {
             return (
                 <div className="inputFieldWrapper">
-                    <input id="inputFieldText" type="text" placeholder={placeholder} />
+                    <input id="inputFieldText" type="text" placeholder={placeholder} onChange={(event) => { onChange(event.target.value) }} />
                 </div>
             );
         }

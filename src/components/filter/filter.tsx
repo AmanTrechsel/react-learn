@@ -12,7 +12,7 @@ export default function Filter({ title, stateFilter, onChange }: { title: string
             filterButton.current.classList.toggle("selected");
             setIsToggled(!isToggled);
             if (onChange) {
-                onChange.call(onChange, !isToggled, stateFilter);
+                onChange(!isToggled, stateFilter);
             }
         }
     }

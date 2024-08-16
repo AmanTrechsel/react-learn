@@ -6,6 +6,7 @@
 }
 
 .searchBarWrapper {
+    z-index: -1;
     margin: 10px 0;
     width: 100%;
     position: relative;

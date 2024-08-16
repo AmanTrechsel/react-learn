@@ -1,13 +1,14 @@
-import React from "react";
-import openURL from "../../utils/openURL";
+import { useNavigate } from "react-router-dom";
 
 import "./back.css";
 
 const { default: backSvg } = require("../../assets/back.svg") as { default: string };
 
 export default function Back({url}: {url: string}) {
+  const navigate = useNavigate();
+  
   function open() {
-    openURL(url)
+    navigate(url)
   }
 
   return (

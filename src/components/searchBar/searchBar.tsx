@@ -1,15 +1,18 @@
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useContext, useState } from "react";
 import Todo from "../../classes/todo/todo";
 import SearchResult from "../searchResult/searchResult";
 
 import "./searchBar.css";
+import { TodoItemsContext } from "../../contexts/todoItems/todoItemsContext";
 
-export default function SearchBar({todos, onChange, onSearchResult}: {todos: Todo[], onChange?: (value: string, results: number[]) => void, onSearchResult?: (result?: Todo) => void}) {
+export default function SearchBar({onChange, onSearchResult}: {onChange?: (value: string, results: number[]) => void, onSearchResult?: (result?: Todo) => void}) {
     const MAX_RESULTS = 3;
 
     const { default: searchSvg } = require("../../assets/search.svg") as { default: string };
     const [searchResults, setSearchResults] = useState<JSX.Element[]>([]);
     const [isFocused, setFocused] = useState<boolean>(false);
+    
+    const { tasks, setTasks } = useContext(TodoItemsContext);
 
     function checkSearchResult(checkA: string, checkB: string): boolean {
         var checkALowered = checkA.toLowerCase();
@@ -39,7 +42,7 @@ export default function SearchBar({todos, onChange, onSearchResult}: {todos: Tod
 
     function updateSearchResult(todo?: Todo) {
         if (onSearchResult) {
-            onSearchResult.call(onSearchResult, todo);
+            onSearchResult(todo);
         }
     }
 
@@ -48,7 +51,7 @@ export default function SearchBar({todos, onChange, onSearchResult}: {todos: Tod
         let tempSearchResults: JSX.Element[] = [];
         let resultIndices: number[] = [];
         let index = 0;
-        for (let todoItem of todos) {
+        for (let todoItem of tasks) {
             if (tempSearchResults.length >= MAX_RESULTS) {
                 break;
             }
@@ -63,7 +66,7 @@ export default function SearchBar({todos, onChange, onSearchResult}: {todos: Tod
             resultIndices = [];
         }
         if (onChange) {
-            onChange.call(onChange, searchText, resultIndices);
+            onChange(searchText, resultIndices);
         }
     }
 

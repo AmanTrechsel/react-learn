@@ -5,7 +5,7 @@ import "./searchResult.css";
 export default function SearchResult({todo, onClick}: {todo: Todo, onClick?: (todo: Todo) => void}) {
     function click() {
         if (onClick) {
-            onClick.call(onClick, todo);
+            onClick(todo);
         }
     }
 

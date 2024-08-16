@@ -4,10 +4,14 @@ import { TodoState } from "./todoState";
 import ProgressBar from "../progressBar/progressBar";
 import UserIcon from "../userIcon/userIcon";
 import Todo from "../../classes/todo/todo";
+import User from "../../classes/user/user";
+import Button from "../button/button";
 
 import "./todoItem.css";
+import { useContext, useEffect, useRef, useState } from "react";
+import { UsersContext } from "../../contexts/users/usersContext";
 
-export default function TodoItem({todo}: {todo: Todo}) {
+export default function TodoItem({todo, editFunction}: {todo: Todo, editFunction: (task: Todo) => void}) {
     const title = todo.getTitle();
     const category = todo.getCategory();
     const priority = todo.getPriority();
@@ -15,6 +19,15 @@ export default function TodoItem({todo}: {todo: Todo}) {
     const startDate = todo.getStartDate();
     const goalDate = todo.getGoalDate();
     const state = todo.getState()
+
+    const { users, setUsers } = useContext(UsersContext);
+
+    const [assignedUsers, setAssignedUsers] = useState<any>();
+    const [nonAssignedUsersButtons, setNonAssignedUsersButtons] = useState<any>();
+
+    const addAssignedUsersDropdown = useRef<any>();
+    const addAssignedUserButton = useRef<any>();
+    const moreDropdown = useRef<any>();
 
     const { default: startIconSvg } = require("../../assets/calendar.svg") as { default: string };
     const { default: goalIconSvg } = require("../../assets/flag.svg") as { default: string };
@@ -93,6 +106,48 @@ export default function TodoItem({todo}: {todo: Todo}) {
         }
     }
 
+    function updateAssignedUsers() {
+        let filteredUsers = users.filter((user: User) => user.hasTask(todo.getId()));
+        setAssignedUsers(filteredUsers.map((user: User, index: string) => (
+                <UserIcon key={"UserIcon" + index} user={user} />
+            )
+        ));
+    }
+
+    function updateNonAssigned() {
+        let nonAssigned = users.filter((user: User) => !user.hasTask(todo.getId()));
+        setNonAssignedUsersButtons(nonAssigned.map((user: User, index: string) => (
+            <button key={"nonAssignedUserButton" + index} className="nonAssignedUser" onClick={() => addAssignedUser(user)}>{user.getFullName()}</button>
+        )));
+    }
+
+    function toggleAddAssigned() {
+        if (addAssignedUsersDropdown.current) {
+            addAssignedUsersDropdown.current.classList.toggle("open");
+        }
+    }
+
+    function addAssignedUser(user: User) {
+        addAssignedUsersDropdown.current.classList.remove("open");
+        user.appendTask(todo.getId());
+        updateNonAssigned();
+        updateAssignedUsers();
+        if (addAssignedUsersDropdown.current.children.length <= 1) {
+            addAssignedUserButton.current.style.display = "none";
+        }
+    }
+
+    function toggleMore() {
+        if (moreDropdown.current) {
+            moreDropdown.current.classList.toggle("open");
+        }
+    }
+
+    useEffect(() => {
+        updateAssignedUsers();
+        updateNonAssigned();
+    }, [users, todo, setAssignedUsers, setNonAssignedUsersButtons]);
+
     return (
         <div className="todoItem">
             <div className="todoItemMain">
@@ -111,17 +166,21 @@ export default function TodoItem({todo}: {todo: Todo}) {
                     </div>
                 </div>
                 <div className="assignedUsers">
-                    <UserIcon src="jan" />
-                    <UserIcon src="piet" />
-                    <UserIcon src="mia" />
-                    <UserIcon src="kees" />
-                    <button className="addAssignedUser"><img src={addIconSvg} alt="Add assigned user" /></button>
+                    {assignedUsers}
+                    <button ref={addAssignedUserButton} className="addAssignedUser" onClick={toggleAddAssigned}><img src={addIconSvg} alt="Add assigned user" /></button>
+                    <div ref={addAssignedUsersDropdown} className="assignedUsersDropdown">
+                        {nonAssignedUsersButtons}
+                    </div>
                 </div>
             </div>
             <div className="todoItemSide">
-                <button className="todoMore">
+                <button className="todoMore" onClick={toggleMore}>
                     <img className="todoMoreIcon" src={moreIconSvg} alt="More" />
                 </button>
+                <div ref={moreDropdown} className="todoMoreDropdown">
+                    <button className="moreButton" onClick={() => editFunction(todo)}>Edit</button>
+                    <button className="moreButton delete">Delete</button>
+                </div>
                 <div className={"todoPriorityWrapper "+getPriorityName()}>
                     <p className="todoPriority">{getPriorityName()}</p>
                 </div>

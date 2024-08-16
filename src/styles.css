@@ -11,6 +11,7 @@
   --placeholder-text: #969696;
   --placeholder-search: #DADADA;
   --background: #ffffff;
+  --overlay: rgba(0, 0, 0, 0.5);
 
   --category-design: var(--primary);
   --category-code: var(--tertiary);

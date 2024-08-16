@@ -1,9 +1,11 @@
-import React from "react";
+import { useContext, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 import Banner from "../../components/banner/banner";
 import InputField from "../../components/inputField/inputField";
 import CheckBox from "../../components/checkBox/checkBox";
 import Button from "../../components/button/button";
-import openURL from "../../utils/openURL";
+import { UsersContext } from "../../contexts/users/usersContext";
+import { CurrentUserContext } from "../../contexts/currentUser/currentUserContext";
 
 import "./signIn.css";
 
@@ -11,18 +13,52 @@ const { default: googleSvg } = require("../../assets/google.svg") as { default: 
 const { default: facebookSvg } = require("../../assets/facebook.svg") as { default: string };
 
 export default function SignInScreen() {
+  const { users, setUsers } = useContext(UsersContext);
+  const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
+  
+  const navigate = useNavigate();
+
+  function reducer(state: any, action: any) {
+    switch (action.type) {
+      case "change_email": {
+        return {
+          email: action.changedEmail,
+          password: state.password
+        };
+      }
+      case "change_password": {
+        return {
+          email: state.email,
+          password: action.changedPassword
+        };
+      }
+    }
+  }
+
+  const [state, dispatch] = useReducer(reducer, { email: "", password: "" });
+
+  function signIn() {
+    for (let user of users) {
+      if (user.validateLogin(state?.email, state?.password)) {
+        setCurrentUser(user);
+        break;
+      }
+    };
+    navigate("/home");
+  }
+
   return (
     <div className="signInScreen">
       <Banner text="Sign In" url="/landing" />
       <div className="content">
-        <InputField title="E-mail" placeholder="Enter your email" password={false} />
-        <InputField title="Password" placeholder="Enter your password" password={true} />
+        <InputField title="E-mail" placeholder="Enter your email" password={false} onChange={(value: string) => dispatch({ type: 'change_email', changedEmail: value })} />
+        <InputField title="Password" placeholder="Enter your password" password={true} onChange={(value: string) => dispatch({ type: 'change_password', changedPassword: value })} />
         <div className="passwordOptions">
           <CheckBox title="Remember Password" />
           <a>Forgot Password?</a>
         </div>
         <div className="buttons">
-          <Button title="Sign In Now" onClick={() => {openURL("./home");}} />
+          <Button title="Sign In Now" onClick={signIn} />
           <h3>Or with</h3>
           <Button title="Login with Facebook" img={facebookSvg}/>
           <Button title="Login with Google" inverted={true} img={googleSvg}/>
