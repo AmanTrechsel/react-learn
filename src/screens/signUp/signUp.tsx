@@ -5,16 +5,17 @@ import InputField from "../../components/inputField/inputField";
 import CheckBox from "../../components/checkBox/checkBox";
 import Button from "../../components/button/button";
 import { CurrentUserContext } from "../../contexts/currentUser/currentUserContext";
-import { UsersContext } from "../../contexts/users/usersContext";
+import { UpdaterContext } from "../../contexts/updater/updaterContext";
 import User from "../../classes/user/user";
+import Updater from "../../classes/updater/updater";
 
 import "./signUp.css";
 
-const { default: googleSvg } = require("../../assets/google.svg") as { default: string };
-const { default: facebookSvg } = require("../../assets/facebook.svg") as { default: string };
-
 export default function SignUpScreen() {
-  const { users, setUsers } = useContext(UsersContext);
+  const { default: googleSvg } = require("../../assets/google.svg") as { default: string };
+  const { default: facebookSvg } = require("../../assets/facebook.svg") as { default: string };
+
+  const { updater, setUpdater } = useContext(UpdaterContext);
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     
   const navigate = useNavigate();
@@ -39,10 +40,8 @@ export default function SignUpScreen() {
   const [state, dispatch] = useReducer(reducer, { email: "", password: "" });
 
   function signUp() {
-    var newUsers = users;
     var createdUser = new User("New", "User", state?.email, state?.password);
-    newUsers.push(createdUser);
-    setUsers(newUsers);
+    updater.appendUser(updater, createdUser);
     setCurrentUser(createdUser);
     navigate("/home");
   }

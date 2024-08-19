@@ -4,16 +4,17 @@ import Banner from "../../components/banner/banner";
 import InputField from "../../components/inputField/inputField";
 import CheckBox from "../../components/checkBox/checkBox";
 import Button from "../../components/button/button";
-import { UsersContext } from "../../contexts/users/usersContext";
 import { CurrentUserContext } from "../../contexts/currentUser/currentUserContext";
+import { UpdaterContext } from "../../contexts/updater/updaterContext";
 
 import "./signIn.css";
 
-const { default: googleSvg } = require("../../assets/google.svg") as { default: string };
-const { default: facebookSvg } = require("../../assets/facebook.svg") as { default: string };
 
 export default function SignInScreen() {
-  const { users, setUsers } = useContext(UsersContext);
+  const { default: googleSvg } = require("../../assets/google.svg") as { default: string };
+  const { default: facebookSvg } = require("../../assets/facebook.svg") as { default: string };
+
+  const { updater, setUpdater } = useContext(UpdaterContext);
   const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
   
   const navigate = useNavigate();
@@ -38,7 +39,7 @@ export default function SignInScreen() {
   const [state, dispatch] = useReducer(reducer, { email: "", password: "" });
 
   function signIn() {
-    for (let user of users) {
+    for (let user of updater.getUsers()) {
       if (user.validateLogin(state?.email, state?.password)) {
         setCurrentUser(user);
         break;

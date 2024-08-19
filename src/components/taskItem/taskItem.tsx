@@ -1,3 +1,5 @@
+import { useContext, useEffect, useRef, useState } from "react";
+import { UpdaterContext } from "../../contexts/updater/updaterContext";
 import { TaskCategory } from "./taskCategory";
 import { TaskPriority } from "./taskPriority";
 import { TaskState } from "./taskState";
@@ -8,8 +10,7 @@ import User from "../../classes/user/user";
 import Button from "../button/button";
 
 import "./taskItem.css";
-import { useContext, useEffect, useRef, useState } from "react";
-import { UsersContext } from "../../contexts/users/usersContext";
+
 
 export default function TaskItem({task, editFunction, deleteFunction}: {task: Task, editFunction: (task: Task) => void, deleteFunction: (task: Task) => void}) {
     const title = task.getTitle();
@@ -20,7 +21,7 @@ export default function TaskItem({task, editFunction, deleteFunction}: {task: Ta
     const goalDate = task.getGoalDate();
     const state = task.getState()
 
-    const { users, setUsers } = useContext(UsersContext);
+    const { updater, setUpdater } = useContext(UpdaterContext);
 
     const [assignedUsers, setAssignedUsers] = useState<any>();
     const [nonAssignedUsersButtons, setNonAssignedUsersButtons] = useState<any>();
@@ -107,7 +108,7 @@ export default function TaskItem({task, editFunction, deleteFunction}: {task: Ta
     }
 
     function updateAssignedUsers() {
-        let filteredUsers = users.filter((user: User) => user.hasTask(task.getId()));
+        let filteredUsers = updater.getUsers().filter((user: User) => user.hasTask(task.getId()));
         setAssignedUsers(filteredUsers.map((user: User, index: string) => (
                 <UserIcon key={"UserIcon" + index} user={user} />
             )
@@ -115,7 +116,7 @@ export default function TaskItem({task, editFunction, deleteFunction}: {task: Ta
     }
 
     function updateNonAssigned() {
-        let nonAssigned = users.filter((user: User) => !user.hasTask(task.getId()));
+        let nonAssigned = updater.getUsers().filter((user: User) => !user.hasTask(task.getId()));
         setNonAssignedUsersButtons(nonAssigned.map((user: User, index: string) => (
             <button key={"nonAssignedUserButton" + index} className="nonAssignedUser" onClick={() => addAssignedUser(user)}>{user.getFullName()}</button>
         )));
@@ -146,7 +147,7 @@ export default function TaskItem({task, editFunction, deleteFunction}: {task: Ta
     useEffect(() => {
         updateAssignedUsers();
         updateNonAssigned();
-    }, [users, task, setAssignedUsers, setNonAssignedUsersButtons]);
+    }, [updater, task, setAssignedUsers, setNonAssignedUsersButtons]);
 
     return (
         <div className="taskItem">

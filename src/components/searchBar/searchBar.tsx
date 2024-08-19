@@ -1,9 +1,9 @@
-import { SetStateAction, useContext, useState } from "react";
+import { useContext, useState } from "react";
+import { UpdaterContext } from "../../contexts/updater/updaterContext";
 import Task from "../../classes/task/task";
 import SearchResult from "../searchResult/searchResult";
 
 import "./searchBar.css";
-import { TaskItemsContext } from "../../contexts/taskItems/taskItemsContext";
 
 export default function SearchBar({onChange, onSearchResult}: {onChange?: (value: string, results: number[]) => void, onSearchResult?: (result?: Task) => void}) {
     const maxResults = 3;
@@ -12,7 +12,7 @@ export default function SearchBar({onChange, onSearchResult}: {onChange?: (value
     const [searchResults, setSearchResults] = useState<JSX.Element[]>([]);
     const [isFocused, setFocused] = useState<boolean>(false);
     
-    const { tasks, setTasks } = useContext(TaskItemsContext);
+    const { updater, setUpdater } = useContext(UpdaterContext);
 
     function checkSearchResult(checkA: string, checkB: string): boolean {
         var checkALowered = checkA.toLowerCase();
@@ -51,7 +51,7 @@ export default function SearchBar({onChange, onSearchResult}: {onChange?: (value
         let tempSearchResults: JSX.Element[] = [];
         let resultIndices: number[] = [];
         let index = 0;
-        for (let taskItem of tasks) {
+        for (let taskItem of updater.getTasks()) {
             if (tempSearchResults.length >= maxResults) {
                 break;
             }

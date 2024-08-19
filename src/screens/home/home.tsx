@@ -5,13 +5,14 @@ import { TaskState } from "../../components/taskItem/taskState";
 import SearchBar from "../../components/searchBar/searchBar";
 import Filter from "../../components/filter/filter";
 import Task from "../../classes/task/task";
+import Updater from "../../classes/updater/updater";
 import NavigationButton from "../../components/navigationButton/navigationButton";
 import { useState, useEffect, useContext, useRef, useReducer } from "react";
+import { useNavigate } from "react-router-dom";
 import { CurrentUserContext } from "../../contexts/currentUser/currentUserContext";
+import { UpdaterContext } from "../../contexts/updater/updaterContext";
 
 import "./home.css"
-import { useNavigate } from "react-router-dom";
-import { TaskItemsContext } from "../../contexts/taskItems/taskItemsContext";
 
 export default function HomeScreen() {
     const { default: homeSvg } = require("../../assets/home.svg") as { default: string };
@@ -34,7 +35,7 @@ export default function HomeScreen() {
     const [editingTask, setEditingTask] = useState<Task>();
 
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-    const { tasks, setTasks } = useContext(TaskItemsContext);
+    const { updater, setUpdater } = useContext(UpdaterContext);
 
     const navigate = useNavigate();
 
@@ -123,12 +124,12 @@ export default function HomeScreen() {
             )));
         }
         else if (taskFilters.length === 0) {
-            setTaskElements(tasks.map((taskItem: Task, index: string) => (
+            setTaskElements(updater.getTasks().map((taskItem: Task, index: string) => (
                 <TaskItem key={"TaskItem" + index} task={taskItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
         else {
-            setTaskElements(tasks.filter((state: { getState: () => TaskState; }) => taskFilters.indexOf(state.getState()) != -1).map((taskItem: Task, index: string) => (
+            setTaskElements(updater.getTasks().filter((state: { getState: () => TaskState; }) => taskFilters.indexOf(state.getState()) != -1).map((taskItem: Task, index: string) => (
                 <TaskItem key={"TaskItem" + index} task={taskItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
@@ -155,7 +156,7 @@ export default function HomeScreen() {
             setSearchResults([]);
         }
         else {
-            setSearchResults(resultIndices.map((value) => (tasks[value])));
+            setSearchResults(resultIndices.map((value) => (updater.getTasks()[value])));
         }
         setSelectedResult(undefined);
         updateTaskElements();
@@ -196,19 +197,15 @@ export default function HomeScreen() {
     }
 
     function createTask() {
-        let newTasks = tasks;
-        newTasks.push(new Task(tasks.length, state?.title, state?.category, state?.priority, state?.endDate, state?.startDate))
-        setTasks(newTasks);
+        var newTask = new Task(updater.getTasks().length, state?.title, state?.category, state?.priority, state?.endDate, state?.startDate);
+        updater.appendTask(updater, newTask);
         resetDispatch();
         updateTaskElements();
         toggleCreateTask();
     }
 
     function deleteTask(task: Task) {
-        let newTasks = tasks;
-        let currentTaskIndex = newTasks.indexOf(task);
-        newTasks.splice(currentTaskIndex, 1);
-        setTasks(newTasks);
+        updater.removeTask(updater, task);
         updateTaskElements();
     }
 
@@ -225,10 +222,8 @@ export default function HomeScreen() {
     function editTask() {
         if (editingTask) {
             resetDispatch();
-            let newTasks = tasks;
-            let currentTaskIndex = newTasks.indexOf(editingTask);
-            newTasks[currentTaskIndex] = new Task(editingTask.getId(), state?.title, state?.category, state?.priority, state?.endDate, state?.startDate, editingTask.getProgress());
-            setTasks(newTasks);
+            let updatedTask = new Task(editingTask.getId(), state?.title, state?.category, state?.priority, state?.endDate, state?.startDate, editingTask.getProgress());
+            updater.updateTask(updater, editingTask, updatedTask);
             updateTaskElements();
             toggleCreateTask();
             setEditingTask(undefined);
