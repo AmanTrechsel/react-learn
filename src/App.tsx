@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 
+
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { UsersContext } from "./contexts/users/usersContext";
@@ -20,8 +21,15 @@ import StatisticsScreen from "./screens/statistics/statistics";
 import AccountScreen from "./screens/account/account";
 import { TodoItemsContext } from "./contexts/todoItems/todoItemsContext";
 
+import { getBooks } from "./utils/queries";
+import { useQuery } from "@apollo/client";
+
 export default function App() {
   const [currentUser, setCurrentUser] = useState<User>();
+
+  const { loading, error, data } = useQuery(getBooks);
+
+  console.log(data);
 
   const [users, setUsers] = useState<User[]>([
     new User("Sarthak", "Epic", "sarthak@mail.nl", "wachtwoord", "sarthak"),

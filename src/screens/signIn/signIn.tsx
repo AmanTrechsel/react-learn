@@ -20,13 +20,13 @@ export default function SignInScreen() {
 
   function reducer(state: any, action: any) {
     switch (action.type) {
-      case "change_email": {
+      case "changeEmail": {
         return {
           email: action.changedEmail,
           password: state.password
         };
       }
-      case "change_password": {
+      case "changePassword": {
         return {
           email: state.email,
           password: action.changedPassword
@@ -51,8 +51,8 @@ export default function SignInScreen() {
     <div className="signInScreen">
       <Banner text="Sign In" url="/landing" />
       <form className="content">
-        <InputField title="E-mail" placeholder="Enter your email" password={false} onChange={(value: string) => dispatch({ type: 'change_email', changedEmail: value })} />
-        <InputField title="Password" placeholder="Enter your password" password={true} onChange={(value: string) => dispatch({ type: 'change_password', changedPassword: value })} />
+        <InputField title="E-mail" placeholder="Enter your email" password={false} onChange={(value: string) => dispatch({ type: 'changeEmail', changedEmail: value })} />
+        <InputField title="Password" placeholder="Enter your password" password={true} onChange={(value: string) => dispatch({ type: 'changePassword', changedPassword: value })} />
         <div className="passwordOptions">
           <CheckBox title="Remember Password" />
           <a>Forgot Password?</a>

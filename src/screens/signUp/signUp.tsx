@@ -21,13 +21,13 @@ export default function SignUpScreen() {
 
   function reducer(state: any, action: any) {
     switch (action.type) {
-      case "change_email": {
+      case "changeEmail": {
         return {
           email: action.changedEmail,
           password: state.password
         };
       }
-      case "change_password": {
+      case "changePassword": {
         return {
           email: state.email,
           password: action.changedPassword
@@ -39,11 +39,11 @@ export default function SignUpScreen() {
   const [state, dispatch] = useReducer(reducer, { email: "", password: "" });
 
   function signUp() {
-    var new_users = users;
-    var created_user = new User("New", "User", state?.email, state?.password);
-    new_users.push(created_user);
-    setUsers(new_users);
-    setCurrentUser(created_user);
+    var newUsers = users;
+    var createdUser = new User("New", "User", state?.email, state?.password);
+    newUsers.push(createdUser);
+    setUsers(newUsers);
+    setCurrentUser(createdUser);
     navigate("/home");
   }
 
@@ -51,8 +51,8 @@ export default function SignUpScreen() {
     <div className="signUpScreen">
       <Banner text="Sign Up" url="/landing" />
       <form className="content">
-        <InputField title="E-mail" placeholder="Enter your email" onChange={(value: string) => dispatch({ type: 'change_email', changedEmail: value })} />
-        <InputField title="Password" placeholder="Enter your password" password={true} onChange={(value: string) => dispatch({ type: 'change_password', changedPassword: value })} />
+        <InputField title="E-mail" placeholder="Enter your email" onChange={(value: string) => dispatch({ type: 'changeEmail', changedEmail: value })} />
+        <InputField title="Password" placeholder="Enter your password" password={true} onChange={(value: string) => dispatch({ type: 'changePassword', changedPassword: value })} />
         <InputField title="Retype-Password" placeholder="Retype your password" password={true} />
         <CheckBox title="I Agree terms and Conditions" />
         <div className="buttons">

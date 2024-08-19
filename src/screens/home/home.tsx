@@ -57,49 +57,49 @@ export default function HomeScreen() {
 
     function reducer(state: any, action: any) {
         switch (action.type) {
-            case "change_title": {
+            case "changeTitle": {
                 return {
                     title: action.title,
                     category: state.category,
                     priority: state.priority,
-                    start_date: state.start_date,
-                    end_date: state.end_date
+                    startDate: state.startDate,
+                    endDate: state.endDate
                 };
             }
-            case "change_category": {
+            case "changeCategory": {
                 return {
                     title: state.title,
                     category: action.category,
                     priority: state.priority,
-                    start_date: state.start_date,
-                    end_date: state.end_date
+                    startDate: state.startDate,
+                    endDate: state.endDate
                 };
             }
-            case "change_priority": {
+            case "changePriority": {
                 return {
                     title: state.title,
                     category: state.category,
                     priority: action.priority,
-                    start_date: state.start_date,
-                    end_date: state.end_date
+                    startDate: state.startDate,
+                    endDate: state.endDate
                 };
             }
-            case "change_start_date": {
+            case "changeStartDate": {
                 return {
                     title: state.title,
                     category: state.category,
                     priority: state.priority,
-                    start_date: action.start_date,
-                    end_date: state.end_date
+                    startDate: action.startDate,
+                    endDate: state.endDate
                 };
             }
-            case "change_end_date": {
+            case "changeEndDate": {
                 return {
                     title: state.title,
                     category: state.category,
                     priority: state.priority,
-                    start_date: state.start_date,
-                    end_date: action.end_date
+                    startDate: state.startDate,
+                    endDate: action.endDate
                 };
             }
         }
@@ -109,8 +109,8 @@ export default function HomeScreen() {
         title: "",
         category: TodoCategory.Design,
         priority: TodoPriority.Medium, 
-        start_date: new Date(),
-        end_date: new Date()
+        startDate: new Date(),
+        endDate: new Date()
     });
 
     function updateTodoElements() {
@@ -197,7 +197,7 @@ export default function HomeScreen() {
 
     function createTask() {
         let newTasks = tasks;
-        newTasks.push(new Todo(tasks.length, state?.title, state?.category, state?.priority, state?.end_date, state?.start_date))
+        newTasks.push(new Todo(tasks.length, state?.title, state?.category, state?.priority, state?.endDate, state?.startDate))
         setTasks(newTasks);
         resetDispatch();
         updateTodoElements();
@@ -214,11 +214,11 @@ export default function HomeScreen() {
 
     function startEditTask(task: Todo) {
         setEditingTask(task);
-        dispatch({ type: 'change_title', title: task.getTitle()});
-        dispatch({ type: 'change_category', category: task.getCategory()});
-        dispatch({ type: 'change_priority', priority: task.getPriority()});
-        dispatch({ type: 'change_start_date', start_date: task.getStartDate()});
-        dispatch({ type: 'change_end_date', end_date: task.getGoalDate()});
+        dispatch({ type: 'changeTitle', title: task.getTitle()});
+        dispatch({ type: 'changeCategory', category: task.getCategory()});
+        dispatch({ type: 'changePriority', priority: task.getPriority()});
+        dispatch({ type: 'changeStartDate', startDate: task.getStartDate()});
+        dispatch({ type: 'changeEndDate', endDate: task.getGoalDate()});
         toggleCreateTask();
     }
 
@@ -227,7 +227,7 @@ export default function HomeScreen() {
             resetDispatch();
             let newTasks = tasks;
             let currentTaskIndex = newTasks.indexOf(editingTask);
-            newTasks[currentTaskIndex] = new Todo(editingTask.getId(), state?.title, state?.category, state?.priority, state?.end_date, state?.start_date, editingTask.getProgress());
+            newTasks[currentTaskIndex] = new Todo(editingTask.getId(), state?.title, state?.category, state?.priority, state?.endDate, state?.startDate, editingTask.getProgress());
             setTasks(newTasks);
             updateTodoElements();
             toggleCreateTask();
@@ -236,11 +236,11 @@ export default function HomeScreen() {
     }
 
     function resetDispatch() {
-        dispatch({ type: 'change_title', title: ""});
-        dispatch({ type: 'change_category', category: TodoCategory.Design});
-        dispatch({ type: 'change_priority', priority: TodoPriority.Medium});
-        dispatch({ type: 'change_start_date', start_date: new Date()});
-        dispatch({ type: 'change_end_date', end_date: new Date()});
+        dispatch({ type: 'changeTitle', title: ""});
+        dispatch({ type: 'changeCategory', category: TodoCategory.Design});
+        dispatch({ type: 'changePriority', priority: TodoPriority.Medium});
+        dispatch({ type: 'changeStartDate', startDate: new Date()});
+        dispatch({ type: 'changeEndDate', endDate: new Date()});
     }
 
     function getCreateTaskButton() {
@@ -318,28 +318,28 @@ export default function HomeScreen() {
                     <div ref={createTaskPanel} className="createTask">
                         <div className="taskInput">
                             <label className="taskLabel" htmlFor="createTaskName">Task name</label>
-                            <input className="createTaskInput" id="createTaskName" value={state?.title} onChange={(event) => dispatch({ type: 'change_title', title: event.target.value})} type="text" placeholder="Enter a task name..." />
+                            <input className="createTaskInput" id="createTaskName" value={state?.title} onChange={(event) => dispatch({ type: 'changeTitle', title: event.target.value})} type="text" placeholder="Enter a task name..." />
                         </div>
                         <div className="taskInput">
                             <label className="taskLabel" htmlFor="createTaskCategory">Category</label>
-                            <select className="createTaskInput" id="createTaskCategory" value={Number(state?.category)} onChange={(event) => dispatch({ type: 'change_category', category: Number(event.target.value) as TodoCategory})}>
+                            <select className="createTaskInput" id="createTaskCategory" value={Number(state?.category)} onChange={(event) => dispatch({ type: 'changeCategory', category: Number(event.target.value) as TodoCategory})}>
                                 {categoryOptions}
                             </select>
                         </div>
                         <div className="taskInput">
                             <label className="taskLabel" htmlFor="createTaskPriority">Priority</label>
-                            <select className="createTaskInput" id="createTaskPriority" value={Number(state?.priority)} onChange={(event) => dispatch({ type: 'change_priority', priority: Number(event.target.value) as TodoPriority})}>
+                            <select className="createTaskInput" id="createTaskPriority" value={Number(state?.priority)} onChange={(event) => dispatch({ type: 'changePriority', priority: Number(event.target.value) as TodoPriority})}>
                                 {priorityOptions}
                             </select>
                         </div>
                         <div className="groupedTaskInput">
                             <div className="taskInput">
                                 <label className="taskLabel" htmlFor="createTaskStart">Start date</label>
-                                <input className="createTaskInput" id="createTaskStart" value={formatDate(state?.start_date)} type="date" onChange={(event) => dispatch({ type: 'change_start_date', start_date: new Date(event.target.value)})} />
+                                <input className="createTaskInput" id="createTaskStart" value={formatDate(state?.startDate)} type="date" onChange={(event) => dispatch({ type: 'changeStartDate', startDate: new Date(event.target.value)})} />
                             </div>
                             <div className="taskInput">
                                 <label className="taskLabel" htmlFor="createTaskGoal">Goal date</label>
-                                <input className="createTaskInput" id="createTaskGoal" value={formatDate(state?.end_date)} type="date" onChange={(event) => dispatch({ type: 'change_end_date', end_date: new Date(event.target.value)})} />
+                                <input className="createTaskInput" id="createTaskGoal" value={formatDate(state?.endDate)} type="date" onChange={(event) => dispatch({ type: 'changeEndDate', endDate: new Date(event.target.value)})} />
                             </div>
                         </div>
                         {getCreateTaskButton()}

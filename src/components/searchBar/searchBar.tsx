@@ -6,7 +6,7 @@ import "./searchBar.css";
 import { TodoItemsContext } from "../../contexts/todoItems/todoItemsContext";
 
 export default function SearchBar({onChange, onSearchResult}: {onChange?: (value: string, results: number[]) => void, onSearchResult?: (result?: Todo) => void}) {
-    const MAX_RESULTS = 3;
+    const maxResults = 3;
 
     const { default: searchSvg } = require("../../assets/search.svg") as { default: string };
     const [searchResults, setSearchResults] = useState<JSX.Element[]>([]);
@@ -52,7 +52,7 @@ export default function SearchBar({onChange, onSearchResult}: {onChange?: (value
         let resultIndices: number[] = [];
         let index = 0;
         for (let todoItem of tasks) {
-            if (tempSearchResults.length >= MAX_RESULTS) {
+            if (tempSearchResults.length >= maxResults) {
                 break;
             }
             if (checkSearchResult(todoItem.getTitle(), searchText)) {
