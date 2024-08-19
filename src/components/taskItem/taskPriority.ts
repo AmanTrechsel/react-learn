@@ -1,4 +1,4 @@
-export enum TodoPriority{
+export enum TaskPriority{
     Low,
     Medium,
     High,

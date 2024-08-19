@@ -1,17 +1,17 @@
-import Todo from "../../classes/todo/todo";
+import Task from "../../classes/task/task";
 
 import "./searchResult.css";
 
-export default function SearchResult({todo, onClick}: {todo: Todo, onClick?: (todo: Todo) => void}) {
+export default function SearchResult({task, onClick}: {task: Task, onClick?: (task: Task) => void}) {
     function click() {
         if (onClick) {
-            onClick(todo);
+            onClick(task);
         }
     }
 
     return (
         <button className="searchResult" onClick={click}>
-            {todo.getTitle()}
+            {task.getTitle()}
         </button>
     );
 }

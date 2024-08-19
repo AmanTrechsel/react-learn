@@ -1,17 +1,17 @@
-import TodoItem from "../../components/todoItem/todoItem";
-import { TodoCategory } from "../../components/todoItem/todoCategory";
-import { TodoPriority } from "../../components/todoItem/todoPriority";
-import { TodoState } from "../../components/todoItem/todoState";
+import TaskItem from "../../components/taskItem/taskItem";
+import { TaskCategory } from "../../components/taskItem/taskCategory";
+import { TaskPriority } from "../../components/taskItem/taskPriority";
+import { TaskState } from "../../components/taskItem/taskState";
 import SearchBar from "../../components/searchBar/searchBar";
 import Filter from "../../components/filter/filter";
-import Todo from "../../classes/todo/todo";
+import Task from "../../classes/task/task";
 import NavigationButton from "../../components/navigationButton/navigationButton";
 import { useState, useEffect, useContext, useRef, useReducer } from "react";
 import { CurrentUserContext } from "../../contexts/currentUser/currentUserContext";
 
 import "./home.css"
 import { useNavigate } from "react-router-dom";
-import { TodoItemsContext } from "../../contexts/todoItems/todoItemsContext";
+import { TaskItemsContext } from "../../contexts/taskItems/taskItemsContext";
 
 export default function HomeScreen() {
     const { default: homeSvg } = require("../../assets/home.svg") as { default: string };
@@ -27,14 +27,14 @@ export default function HomeScreen() {
     const { default: burgerSvg } = require("../../assets/hamburger.svg") as { default: string };
     const { default: addIconSvg } = require("../../assets/plus.svg") as { default: string };
 
-    const [todoFilters, setTodoFilters] = useState<TodoState[]>([]);
-    const [todoElements, setTodoElements] = useState<JSX.Element[]>([]);
-    const [searchResults, setSearchResults] = useState<Todo[]>([]);
-    const [selectedResult, setSelectedResult] = useState<Todo>();
-    const [editingTask, setEditingTask] = useState<Todo>();
+    const [taskFilters, setTaskFilters] = useState<TaskState[]>([]);
+    const [taskElements, setTaskElements] = useState<JSX.Element[]>([]);
+    const [searchResults, setSearchResults] = useState<Task[]>([]);
+    const [selectedResult, setSelectedResult] = useState<Task>();
+    const [editingTask, setEditingTask] = useState<Task>();
 
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
-    const { tasks, setTasks } = useContext(TodoItemsContext);
+    const { tasks, setTasks } = useContext(TaskItemsContext);
 
     const navigate = useNavigate();
 
@@ -44,8 +44,8 @@ export default function HomeScreen() {
 
     const profilePicture = require("../../assets/users/" + (currentUser ? currentUser.getPicture() : "default") + ".jpg");
 
-    const categories = Object.keys(TodoCategory).filter((v) => isNaN(Number(v)));
-    const priorities = Object.keys(TodoPriority).filter((v) => isNaN(Number(v)));
+    const categories = Object.keys(TaskCategory).filter((v) => isNaN(Number(v)));
+    const priorities = Object.keys(TaskPriority).filter((v) => isNaN(Number(v)));
 
     const categoryOptions = categories.map((category, index) => (
         <option key={"categoryOption" + index} className="createTaskInput" value={index}>{category}</option>
@@ -107,47 +107,47 @@ export default function HomeScreen() {
 
     const [state, dispatch] = useReducer(reducer, {
         title: "",
-        category: TodoCategory.Design,
-        priority: TodoPriority.Medium, 
+        category: TaskCategory.Design,
+        priority: TaskPriority.Medium, 
         startDate: new Date(),
         endDate: new Date()
     });
 
-    function updateTodoElements() {
+    function updateTaskElements() {
         if (selectedResult) {
-            setTodoElements([(<TodoItem key={"TodoItem0"} todo={selectedResult} editFunction={startEditTask} deleteFunction={deleteTask} />)]);
+            setTaskElements([(<TaskItem key={"TaskItem0"} task={selectedResult} editFunction={startEditTask} deleteFunction={deleteTask} />)]);
         }
         else if (searchResults.length > 0) {
-            setTodoElements(searchResults.map((todoItem, index) => (
-                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={startEditTask} deleteFunction={deleteTask} />
+            setTaskElements(searchResults.map((taskItem, index) => (
+                <TaskItem key={"TaskItem" + index} task={taskItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
-        else if (todoFilters.length === 0) {
-            setTodoElements(tasks.map((todoItem: Todo, index: string) => (
-                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={startEditTask} deleteFunction={deleteTask} />
+        else if (taskFilters.length === 0) {
+            setTaskElements(tasks.map((taskItem: Task, index: string) => (
+                <TaskItem key={"TaskItem" + index} task={taskItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
         else {
-            setTodoElements(tasks.filter((state: { getState: () => TodoState; }) => todoFilters.indexOf(state.getState()) != -1).map((todoItem: Todo, index: string) => (
-                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={startEditTask} deleteFunction={deleteTask} />
+            setTaskElements(tasks.filter((state: { getState: () => TaskState; }) => taskFilters.indexOf(state.getState()) != -1).map((taskItem: Task, index: string) => (
+                <TaskItem key={"TaskItem" + index} task={taskItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
     }
 
-    function updateFilter(toggled: boolean, stateFilter: TodoState) {
-        let temporaryFilters: TodoState[] = todoFilters;
+    function updateFilter(toggled: boolean, stateFilter: TaskState) {
+        let temporaryFilters: TaskState[] = taskFilters;
         if (toggled) {
             temporaryFilters.push(stateFilter);
-            setTodoFilters(temporaryFilters);
+            setTaskFilters(temporaryFilters);
         }
         else {
-            let valueIndex = todoFilters.indexOf(stateFilter);
+            let valueIndex = taskFilters.indexOf(stateFilter);
             if (valueIndex != -1) {
                 temporaryFilters.splice(valueIndex, 1);
-                setTodoFilters(temporaryFilters);
+                setTaskFilters(temporaryFilters);
             }
         }
-        updateTodoElements();
+        updateTaskElements();
     }
 
     function updateSearchResults(searchText: string, resultIndices: number[]) {
@@ -158,12 +158,12 @@ export default function HomeScreen() {
             setSearchResults(resultIndices.map((value) => (tasks[value])));
         }
         setSelectedResult(undefined);
-        updateTodoElements();
+        updateTaskElements();
     }
 
-    function updateSelectedResult(todo?: Todo) {
-        setSelectedResult(todo);
-        updateTodoElements();
+    function updateSelectedResult(task?: Task) {
+        setSelectedResult(task);
+        updateTaskElements();
     }
 
     function toggleBurgerMenu() {
@@ -197,22 +197,22 @@ export default function HomeScreen() {
 
     function createTask() {
         let newTasks = tasks;
-        newTasks.push(new Todo(tasks.length, state?.title, state?.category, state?.priority, state?.endDate, state?.startDate))
+        newTasks.push(new Task(tasks.length, state?.title, state?.category, state?.priority, state?.endDate, state?.startDate))
         setTasks(newTasks);
         resetDispatch();
-        updateTodoElements();
+        updateTaskElements();
         toggleCreateTask();
     }
 
-    function deleteTask(task: Todo) {
+    function deleteTask(task: Task) {
         let newTasks = tasks;
         let currentTaskIndex = newTasks.indexOf(task);
         newTasks.splice(currentTaskIndex, 1);
         setTasks(newTasks);
-        updateTodoElements();
+        updateTaskElements();
     }
 
-    function startEditTask(task: Todo) {
+    function startEditTask(task: Task) {
         setEditingTask(task);
         dispatch({ type: 'changeTitle', title: task.getTitle()});
         dispatch({ type: 'changeCategory', category: task.getCategory()});
@@ -227,9 +227,9 @@ export default function HomeScreen() {
             resetDispatch();
             let newTasks = tasks;
             let currentTaskIndex = newTasks.indexOf(editingTask);
-            newTasks[currentTaskIndex] = new Todo(editingTask.getId(), state?.title, state?.category, state?.priority, state?.endDate, state?.startDate, editingTask.getProgress());
+            newTasks[currentTaskIndex] = new Task(editingTask.getId(), state?.title, state?.category, state?.priority, state?.endDate, state?.startDate, editingTask.getProgress());
             setTasks(newTasks);
-            updateTodoElements();
+            updateTaskElements();
             toggleCreateTask();
             setEditingTask(undefined);
         }
@@ -237,8 +237,8 @@ export default function HomeScreen() {
 
     function resetDispatch() {
         dispatch({ type: 'changeTitle', title: ""});
-        dispatch({ type: 'changeCategory', category: TodoCategory.Design});
-        dispatch({ type: 'changePriority', priority: TodoPriority.Medium});
+        dispatch({ type: 'changeCategory', category: TaskCategory.Design});
+        dispatch({ type: 'changePriority', priority: TaskPriority.Medium});
         dispatch({ type: 'changeStartDate', startDate: new Date()});
         dispatch({ type: 'changeEndDate', endDate: new Date()});
     }
@@ -254,12 +254,12 @@ export default function HomeScreen() {
 
     useEffect(() => {
         if (currentUser) {
-            updateTodoElements();
+            updateTaskElements();
         }
         else {
             navigate("/sign-in")
         }
-    }, [todoFilters, searchResults, selectedResult, currentUser]);
+    }, [taskFilters, searchResults, selectedResult, currentUser]);
 
     return (
         <div className="homeScreen">
@@ -307,13 +307,13 @@ export default function HomeScreen() {
                         <SearchBar onChange={updateSearchResults} onSearchResult={updateSelectedResult} />
                         <h1 className="homeTaskTitle">Your Task</h1>
                         <div className="homeFilters">
-                            <Filter title="In Progress" stateFilter={TodoState.InProgress} onChange={updateFilter} />
-                            <Filter title="To Do" stateFilter={TodoState.NotStarted} onChange={updateFilter} />
-                            <Filter title="Completed" stateFilter={TodoState.Completed} onChange={updateFilter} />
+                            <Filter title="In Progress" stateFilter={TaskState.InProgress} onChange={updateFilter} />
+                            <Filter title="To Do" stateFilter={TaskState.NotStarted} onChange={updateFilter} />
+                            <Filter title="Completed" stateFilter={TaskState.Completed} onChange={updateFilter} />
                         </div>
                     </div>
-                    <div className="todoItems">
-                        {todoElements}
+                    <div className="taskItems">
+                        {taskElements}
                     </div>
                     <div ref={createTaskPanel} className="createTask">
                         <div className="taskInput">
@@ -322,13 +322,13 @@ export default function HomeScreen() {
                         </div>
                         <div className="taskInput">
                             <label className="taskLabel" htmlFor="createTaskCategory">Category</label>
-                            <select className="createTaskInput" id="createTaskCategory" value={Number(state?.category)} onChange={(event) => dispatch({ type: 'changeCategory', category: Number(event.target.value) as TodoCategory})}>
+                            <select className="createTaskInput" id="createTaskCategory" value={Number(state?.category)} onChange={(event) => dispatch({ type: 'changeCategory', category: Number(event.target.value) as TaskCategory})}>
                                 {categoryOptions}
                             </select>
                         </div>
                         <div className="taskInput">
                             <label className="taskLabel" htmlFor="createTaskPriority">Priority</label>
-                            <select className="createTaskInput" id="createTaskPriority" value={Number(state?.priority)} onChange={(event) => dispatch({ type: 'changePriority', priority: Number(event.target.value) as TodoPriority})}>
+                            <select className="createTaskInput" id="createTaskPriority" value={Number(state?.priority)} onChange={(event) => dispatch({ type: 'changePriority', priority: Number(event.target.value) as TaskPriority})}>
                                 {priorityOptions}
                             </select>
                         </div>
@@ -347,7 +347,7 @@ export default function HomeScreen() {
                     <div className="homeFooter">
                         <NavigationButton src={homeSvg} selectedSrc={homeSelectedSvg} selected={true} onClick={() => navigate("/home")} />
                         <NavigationButton src={calendarSvg} selectedSrc={calendarSelectedSvg} onClick={() => navigate("/calendar")} />
-                        <button className="addTodoItem" onClick={toggleCreateTask}><img src={addIconSvg} alt="Add todo item" /></button>
+                        <button className="addTaskItem" onClick={toggleCreateTask}><img src={addIconSvg} alt="Add task item" /></button>
                         <NavigationButton src={statisticsSvg} selectedSrc={statisticsSelectedSvg} onClick={() => navigate("/statistics")} />
                         <NavigationButton src={accountSvg} selectedSrc={accountSelectedSvg} onClick={() => navigate("/account")} />
                     </div>

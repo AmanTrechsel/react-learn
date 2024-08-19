@@ -6,9 +6,9 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UsersContext } from "./contexts/users/usersContext";
 import { CurrentUserContext } from "./contexts/currentUser/currentUserContext";
 import User from "./classes/user/user";
-import Todo from "./classes/todo/todo";
-import { TodoCategory } from "./components/todoItem/todoCategory";
-import { TodoPriority } from "./components/todoItem/todoPriority";
+import Task from "./classes/task/task";
+import { TaskCategory } from "./components/taskItem/taskCategory";
+import { TaskPriority } from "./components/taskItem/taskPriority";
 
 import SignInScreen from "./screens/signIn/signIn";
 import SignUpScreen from "./screens/signUp/signUp";
@@ -19,7 +19,7 @@ import HomeScreen from "./screens/home/home";
 import CalendarScreen from "./screens/calendar/calendar";
 import StatisticsScreen from "./screens/statistics/statistics";
 import AccountScreen from "./screens/account/account";
-import { TodoItemsContext } from "./contexts/todoItems/todoItemsContext";
+import { TaskItemsContext } from "./contexts/taskItems/taskItemsContext";
 
 import { getBooks } from "./utils/queries";
 import { useQuery } from "@apollo/client";
@@ -39,18 +39,18 @@ export default function App() {
     new User("Kees", "Apenvlees", "kees@mail.nl", "wachtwoord", "kees")
   ]);
 
-  const [tasks, setTasks] = useState<Todo[]>([
-    new Todo(1, "Layout of landing page", TodoCategory.Design, TodoPriority.Low, new Date(), new Date("2020-04-18"), 50),
-    new Todo(2, "Payment system with PayPal", TodoCategory.Code, TodoPriority.Medium, new Date("2026-07-12"), new Date("2023-11-09"), 60),
-    new Todo(3, "Payment system with Creditcard", TodoCategory.Test, TodoPriority.High, new Date("2003-08-05"), new Date("2001-12-31"), 25),
-    new Todo(4, "Backwards compatability with API version 1", TodoCategory.Implement, TodoPriority.Top, new Date("2014-02-26"), new Date("2014-01-22"), 100),
-    new Todo(5, "Splash screen load times", TodoCategory.Refactor, TodoPriority.Medium, new Date("2000-06-12"), new Date("1999-05-04"))
+  const [tasks, setTasks] = useState<Task[]>([
+    new Task(1, "Layout of landing page", TaskCategory.Design, TaskPriority.Low, new Date(), new Date("2020-04-18"), 50),
+    new Task(2, "Payment system with PayPal", TaskCategory.Code, TaskPriority.Medium, new Date("2026-07-12"), new Date("2023-11-09"), 60),
+    new Task(3, "Payment system with Creditcard", TaskCategory.Test, TaskPriority.High, new Date("2003-08-05"), new Date("2001-12-31"), 25),
+    new Task(4, "Backwards compatability with API version 1", TaskCategory.Implement, TaskPriority.Top, new Date("2014-02-26"), new Date("2014-01-22"), 100),
+    new Task(5, "Splash screen load times", TaskCategory.Refactor, TaskPriority.Medium, new Date("2000-06-12"), new Date("1999-05-04"))
   ]);
 
   return (
     <UsersContext.Provider value={{users, setUsers}} >
       <CurrentUserContext.Provider value={{currentUser, setCurrentUser}} >
-        <TodoItemsContext.Provider value={{tasks, setTasks}} >
+        <TaskItemsContext.Provider value={{tasks, setTasks}} >
           <BrowserRouter>
             <Routes>
               <Route path="/" element={<SplashScreen />} />
@@ -63,7 +63,7 @@ export default function App() {
               <Route path="/account" element={<AccountScreen />} />
             </Routes>
           </BrowserRouter>
-        </TodoItemsContext.Provider>
+        </TaskItemsContext.Provider>
       </CurrentUserContext.Provider>
     </UsersContext.Provider>
   );

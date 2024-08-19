@@ -1,18 +1,18 @@
 import { SetStateAction, useContext, useState } from "react";
-import Todo from "../../classes/todo/todo";
+import Task from "../../classes/task/task";
 import SearchResult from "../searchResult/searchResult";
 
 import "./searchBar.css";
-import { TodoItemsContext } from "../../contexts/todoItems/todoItemsContext";
+import { TaskItemsContext } from "../../contexts/taskItems/taskItemsContext";
 
-export default function SearchBar({onChange, onSearchResult}: {onChange?: (value: string, results: number[]) => void, onSearchResult?: (result?: Todo) => void}) {
+export default function SearchBar({onChange, onSearchResult}: {onChange?: (value: string, results: number[]) => void, onSearchResult?: (result?: Task) => void}) {
     const maxResults = 3;
 
     const { default: searchSvg } = require("../../assets/search.svg") as { default: string };
     const [searchResults, setSearchResults] = useState<JSX.Element[]>([]);
     const [isFocused, setFocused] = useState<boolean>(false);
     
-    const { tasks, setTasks } = useContext(TodoItemsContext);
+    const { tasks, setTasks } = useContext(TaskItemsContext);
 
     function checkSearchResult(checkA: string, checkB: string): boolean {
         var checkALowered = checkA.toLowerCase();
@@ -40,9 +40,9 @@ export default function SearchBar({onChange, onSearchResult}: {onChange?: (value
         return false;
     }
 
-    function updateSearchResult(todo?: Todo) {
+    function updateSearchResult(task?: Task) {
         if (onSearchResult) {
-            onSearchResult(todo);
+            onSearchResult(task);
         }
     }
 
@@ -51,12 +51,12 @@ export default function SearchBar({onChange, onSearchResult}: {onChange?: (value
         let tempSearchResults: JSX.Element[] = [];
         let resultIndices: number[] = [];
         let index = 0;
-        for (let todoItem of tasks) {
+        for (let taskItem of tasks) {
             if (tempSearchResults.length >= maxResults) {
                 break;
             }
-            if (checkSearchResult(todoItem.getTitle(), searchText)) {
-                tempSearchResults.push((<SearchResult key={"SearchResult" + index} todo={todoItem} onClick={updateSearchResult} />));
+            if (checkSearchResult(taskItem.getTitle(), searchText)) {
+                tempSearchResults.push((<SearchResult key={"SearchResult" + index} task={taskItem} onClick={updateSearchResult} />));
                 resultIndices.push(index);
             }
             index++;

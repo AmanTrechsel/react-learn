@@ -1,24 +1,24 @@
-import { TodoCategory } from "./todoCategory";
-import { TodoPriority } from "./todoPriority";
-import { TodoState } from "./todoState";
+import { TaskCategory } from "./taskCategory";
+import { TaskPriority } from "./taskPriority";
+import { TaskState } from "./taskState";
 import ProgressBar from "../progressBar/progressBar";
 import UserIcon from "../userIcon/userIcon";
-import Todo from "../../classes/todo/todo";
+import Task from "../../classes/task/task";
 import User from "../../classes/user/user";
 import Button from "../button/button";
 
-import "./todoItem.css";
+import "./taskItem.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import { UsersContext } from "../../contexts/users/usersContext";
 
-export default function TodoItem({todo, editFunction, deleteFunction}: {todo: Todo, editFunction: (task: Todo) => void, deleteFunction: (task: Todo) => void}) {
-    const title = todo.getTitle();
-    const category = todo.getCategory();
-    const priority = todo.getPriority();
-    const progress = todo.getProgress();
-    const startDate = todo.getStartDate();
-    const goalDate = todo.getGoalDate();
-    const state = todo.getState()
+export default function TaskItem({task, editFunction, deleteFunction}: {task: Task, editFunction: (task: Task) => void, deleteFunction: (task: Task) => void}) {
+    const title = task.getTitle();
+    const category = task.getCategory();
+    const priority = task.getPriority();
+    const progress = task.getProgress();
+    const startDate = task.getStartDate();
+    const goalDate = task.getGoalDate();
+    const state = task.getState()
 
     const { users, setUsers } = useContext(UsersContext);
 
@@ -36,27 +36,27 @@ export default function TodoItem({todo, editFunction, deleteFunction}: {todo: To
 
     function getCategoryName() {
         switch (category) {
-            case TodoCategory.Design:
+            case TaskCategory.Design:
                 return ( <h3 className="categoryDesign">Design</h3> );
-            case TodoCategory.Code:
+            case TaskCategory.Code:
                 return ( <h3 className="categoryCode">Code</h3> );
-            case TodoCategory.Test:
+            case TaskCategory.Test:
                 return ( <h3 className="categoryTest">Test</h3> );
-            case TodoCategory.Implement:
+            case TaskCategory.Implement:
                 return ( <h3 className="categoryImplement">Implement</h3> );
-            case TodoCategory.Refactor:
+            case TaskCategory.Refactor:
                 return ( <h3 className="categoryRefactor">Refactor</h3> );
         }
     }
 
     function getStateName() {
         switch (state) {
-            case TodoState.Completed:
-                return ( <h3 className="todoState">Completed</h3> );
-            case TodoState.InProgress:
-                return ( <h3 className="todoState">Progress</h3> );
-            case TodoState.NotStarted:
-                return ( <h3 className="todoState">Not Started</h3> );
+            case TaskState.Completed:
+                return ( <h3 className="taskState">Completed</h3> );
+            case TaskState.InProgress:
+                return ( <h3 className="taskState">Progress</h3> );
+            case TaskState.NotStarted:
+                return ( <h3 className="taskState">Not Started</h3> );
         }
     }
 
@@ -95,19 +95,19 @@ export default function TodoItem({todo, editFunction, deleteFunction}: {todo: To
 
     function getPriorityName() {
         switch (priority) {
-            case TodoPriority.Low:
+            case TaskPriority.Low:
                 return "Low";
-            case TodoPriority.Medium:
+            case TaskPriority.Medium:
                 return "Medium";
-            case TodoPriority.High:
+            case TaskPriority.High:
                 return "High";
-            case TodoPriority.Top:
+            case TaskPriority.Top:
                 return "Top";
         }
     }
 
     function updateAssignedUsers() {
-        let filteredUsers = users.filter((user: User) => user.hasTask(todo.getId()));
+        let filteredUsers = users.filter((user: User) => user.hasTask(task.getId()));
         setAssignedUsers(filteredUsers.map((user: User, index: string) => (
                 <UserIcon key={"UserIcon" + index} user={user} />
             )
@@ -115,7 +115,7 @@ export default function TodoItem({todo, editFunction, deleteFunction}: {todo: To
     }
 
     function updateNonAssigned() {
-        let nonAssigned = users.filter((user: User) => !user.hasTask(todo.getId()));
+        let nonAssigned = users.filter((user: User) => !user.hasTask(task.getId()));
         setNonAssignedUsersButtons(nonAssigned.map((user: User, index: string) => (
             <button key={"nonAssignedUserButton" + index} className="nonAssignedUser" onClick={() => addAssignedUser(user)}>{user.getFullName()}</button>
         )));
@@ -129,7 +129,7 @@ export default function TodoItem({todo, editFunction, deleteFunction}: {todo: To
 
     function addAssignedUser(user: User) {
         addAssignedUsersDropdown.current.classList.remove("open");
-        user.appendTask(todo.getId());
+        user.appendTask(task.getId());
         updateNonAssigned();
         updateAssignedUsers();
         if (addAssignedUsersDropdown.current.children.length <= 1) {
@@ -146,13 +146,13 @@ export default function TodoItem({todo, editFunction, deleteFunction}: {todo: To
     useEffect(() => {
         updateAssignedUsers();
         updateNonAssigned();
-    }, [users, todo, setAssignedUsers, setNonAssignedUsersButtons]);
+    }, [users, task, setAssignedUsers, setNonAssignedUsersButtons]);
 
     return (
-        <div className="todoItem">
-            <div className="todoItemMain">
+        <div className="taskItem">
+            <div className="taskItemMain">
                 {getCategoryName()}
-                <h1 className="todoTitle">{title}</h1>
+                <h1 className="taskTitle">{title}</h1>
                 {getStateName()}
                 <ProgressBar progress={progress} />
                 <div className="dates">
@@ -173,16 +173,16 @@ export default function TodoItem({todo, editFunction, deleteFunction}: {todo: To
                     </div>
                 </div>
             </div>
-            <div className="todoItemSide">
-                <button className="todoMore" onClick={toggleMore}>
-                    <img className="todoMoreIcon" src={moreIconSvg} alt="More" />
+            <div className="taskItemSide">
+                <button className="taskMore" onClick={toggleMore}>
+                    <img className="taskMoreIcon" src={moreIconSvg} alt="More" />
                 </button>
-                <div ref={moreDropdown} className="todoMoreDropdown">
-                    <button className="moreButton" onClick={() => editFunction(todo)}>Edit</button>
-                    <button className="moreButton delete" onClick={() => deleteFunction(todo)}>Delete</button>
+                <div ref={moreDropdown} className="taskMoreDropdown">
+                    <button className="moreButton" onClick={() => editFunction(task)}>Edit</button>
+                    <button className="moreButton delete" onClick={() => deleteFunction(task)}>Delete</button>
                 </div>
-                <div className={"todoPriorityWrapper "+getPriorityName()}>
-                    <p className="todoPriority">{getPriorityName()}</p>
+                <div className={"taskPriorityWrapper "+getPriorityName()}>
+                    <p className="taskPriority">{getPriorityName()}</p>
                 </div>
             </div>
         </div>

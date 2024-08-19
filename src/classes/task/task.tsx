@@ -1,17 +1,17 @@
-import { TodoCategory } from "../../components/todoItem/todoCategory";
-import { TodoPriority } from "../../components/todoItem/todoPriority";
-import { TodoState } from "../../components/todoItem/todoState";
+import { TaskCategory } from "../../components/taskItem/taskCategory";
+import { TaskPriority } from "../../components/taskItem/taskPriority";
+import { TaskState } from "../../components/taskItem/taskState";
 
-export default class Todo {
+export default class Task {
     private readonly id: number;
     private readonly title: string;
-    private readonly category: TodoCategory;
-    private readonly priority: TodoPriority;
+    private readonly category: TaskCategory;
+    private readonly priority: TaskPriority;
     private readonly progress: number;
     private readonly startDate: Date;
     private readonly goalDate: Date;
 
-    public constructor(id: number, title: string = "", category: TodoCategory, priority: TodoPriority, goalDate: Date, startDate?: Date, progress?: number) {
+    public constructor(id: number, title: string = "", category: TaskCategory, priority: TaskPriority, goalDate: Date, startDate?: Date, progress?: number) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -29,11 +29,11 @@ export default class Todo {
         return this.title;
     }
 
-    public getCategory(): TodoCategory {
+    public getCategory(): TaskCategory {
         return this.category;
     }
 
-    public getPriority(): TodoPriority {
+    public getPriority(): TaskPriority {
         return this.priority;
     }
 
@@ -49,7 +49,7 @@ export default class Todo {
         return this.goalDate;
     }
 
-    public getState(): TodoState {
-        return this.progress > 0 ? this.progress >= 100 ? TodoState.Completed : TodoState.InProgress : TodoState.NotStarted;
+    public getState(): TaskState {
+        return this.progress > 0 ? this.progress >= 100 ? TaskState.Completed : TaskState.InProgress : TaskState.NotStarted;
     }
 }

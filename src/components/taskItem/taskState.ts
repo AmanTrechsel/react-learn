@@ -1,4 +1,4 @@
-export enum TodoState{
+export enum TaskState{
     NotStarted,
     InProgress,
     Completed

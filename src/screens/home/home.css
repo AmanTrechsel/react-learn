@@ -224,7 +224,7 @@
     text-align: left;
 }
 
-.todoItems {
+.taskItems {
     overflow: auto;
     height: 80dvh;
     display: flex;
@@ -240,7 +240,7 @@
     align-items: center;
 }
 
-.addTodoItem {
+.addTaskItem {
     cursor: pointer;
     display: flex;
     justify-content: center;
@@ -254,11 +254,11 @@
     aspect-ratio: 1/1;
 }
 
-.addTodoItem:hover {
+.addTaskItem:hover {
     background-color: var(--secondary);
 }
 
-.addTodoItem:active {
+.addTaskItem:active {
     background-color: var(--primary);
 }
 

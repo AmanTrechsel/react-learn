@@ -1,4 +1,4 @@
-export enum TodoCategory{
+export enum TaskCategory{
     Design,
     Code,
     Test,
