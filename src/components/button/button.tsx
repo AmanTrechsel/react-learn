@@ -2,7 +2,6 @@ import "./button.css";
 
 export default function Button({title, onClick=() => {}, inverted = false, submit = false, img = ""}: {title: string, onClick?: () => void, inverted?: boolean, submit?: boolean, img?: string}) {
     function submitContent() {
-        console.log("Submit");
         if (submit) {
             onClick();
         }

@@ -36,9 +36,6 @@ export default function App() {
   const userData = data;
   const taskData = defineTasks();
 
-  console.log(userData);
-  console.log(taskData);
-
   const defaultUsers = [
     new User("Sarthak", "Epic", "sarthak@mail.nl", "wachtwoord", "sarthak"),
     new User("Jan", "Peterson", "jan@mail.nl", "wachtwoord", "jan", []),

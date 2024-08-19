@@ -1,13 +1,31 @@
 import User from "../user/user";
 import Task from "../task/task";
 
+import { getUsers, getTasks } from "../../utils/queries";
+import { ApolloClient, ApolloLink, InMemoryCache, NormalizedCacheObject, useQuery } from "@apollo/client";
+
+const cache = new InMemoryCache();
+
 export default class Updater {
+    private apolloClient: ApolloClient<NormalizedCacheObject> | undefined
     private users: User[];
     private tasks: Task[];
 
     public constructor(defaultUsers?: User[], defaultTasks?: Task[]) {
         this.users = defaultUsers ? defaultUsers : [];
         this.tasks = defaultTasks ? defaultTasks : [];
+        this.initializeApolloClient();
+    }
+
+    public initializeApolloClient() {
+        if (this.apolloClient === undefined) {
+            const client = new ApolloClient({
+              cache: cache,
+              uri: "http://localhost:4000/",
+              defaultOptions: {query: {fetchPolicy: 'no-cache'}},
+            });
+            this.apolloClient = client;
+          }
     }
 
     public getUsers(): User[] {
@@ -30,8 +48,15 @@ export default class Updater {
         return [];
     }
 
-    public updateUsers() {
-        //setUsers(this.getDatabaseUsers());
+    public async updateUsers() {
+        this.initializeApolloClient();
+        const result = await this.apolloClient!.query({
+            query: getUsers,
+            fetchPolicy: 'no-cache',
+          });
+        this.setUsers(this, result.data.users.map((res: any) => {
+            new User(res.firstname, res.lastname, res.email, res.password, res.picture, res.tasks);
+        }));
     }
 
     public updateTasks() {

@@ -59,6 +59,6 @@ export default class User {
     }
 
     public validateLogin(email: string, password: string): boolean {
-        return email.toLowerCase() === this.email && password === this.password;
+        return (email.toLowerCase() === this.email) && (password === this.password);
     }
 }
