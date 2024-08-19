@@ -50,18 +50,18 @@ export default function SignUpScreen() {
   return (
     <div className="signUpScreen">
       <Banner text="Sign Up" url="/landing" />
-      <div className="content">
+      <form className="content">
         <InputField title="E-mail" placeholder="Enter your email" onChange={(value: string) => dispatch({ type: 'change_email', changedEmail: value })} />
         <InputField title="Password" placeholder="Enter your password" password={true} onChange={(value: string) => dispatch({ type: 'change_password', changedPassword: value })} />
         <InputField title="Retype-Password" placeholder="Retype your password" password={true} />
         <CheckBox title="I Agree terms and Conditions" />
         <div className="buttons">
-          <Button title="Sign Up Now" onClick={signUp} />
+          <Button title="Sign Up Now" onClick={signUp} submit={true} />
           <h3>Or with</h3>
           <Button title="Signup with Facebook" img={facebookSvg}/>
           <Button title="Signup with Google" inverted={true} img={googleSvg}/>
         </div>
-      </div>
+      </form>
       <p className="footerText">Already Have an account? <a href="./sign-in">SignIn</a></p>
     </div>
   );

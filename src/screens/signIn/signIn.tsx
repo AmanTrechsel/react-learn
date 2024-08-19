@@ -50,7 +50,7 @@ export default function SignInScreen() {
   return (
     <div className="signInScreen">
       <Banner text="Sign In" url="/landing" />
-      <div className="content">
+      <form className="content">
         <InputField title="E-mail" placeholder="Enter your email" password={false} onChange={(value: string) => dispatch({ type: 'change_email', changedEmail: value })} />
         <InputField title="Password" placeholder="Enter your password" password={true} onChange={(value: string) => dispatch({ type: 'change_password', changedPassword: value })} />
         <div className="passwordOptions">
@@ -58,12 +58,12 @@ export default function SignInScreen() {
           <a>Forgot Password?</a>
         </div>
         <div className="buttons">
-          <Button title="Sign In Now" onClick={signIn} />
+          <Button title="Sign In Now" onClick={signIn} submit={true} />
           <h3>Or with</h3>
           <Button title="Login with Facebook" img={facebookSvg}/>
           <Button title="Login with Google" inverted={true} img={googleSvg}/>
         </div>
-      </div>
+      </form>
       <p className="footerText">I don’t Have an account? <a href="./sign-up">Signup</a></p>
     </div>
   );

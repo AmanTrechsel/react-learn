@@ -31,6 +31,7 @@ export default function HomeScreen() {
     const [todoElements, setTodoElements] = useState<JSX.Element[]>([]);
     const [searchResults, setSearchResults] = useState<Todo[]>([]);
     const [selectedResult, setSelectedResult] = useState<Todo>();
+    const [editingTask, setEditingTask] = useState<Todo>();
 
     const { currentUser, setCurrentUser } = useContext(CurrentUserContext);
     const { tasks, setTasks } = useContext(TodoItemsContext);
@@ -114,21 +115,21 @@ export default function HomeScreen() {
 
     function updateTodoElements() {
         if (selectedResult) {
-            setTodoElements([(<TodoItem key={"TodoItem0"} todo={selectedResult} editFunction={editTask} />)]);
+            setTodoElements([(<TodoItem key={"TodoItem0"} todo={selectedResult} editFunction={startEditTask} deleteFunction={deleteTask} />)]);
         }
         else if (searchResults.length > 0) {
             setTodoElements(searchResults.map((todoItem, index) => (
-                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={editTask} />
+                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
         else if (todoFilters.length === 0) {
             setTodoElements(tasks.map((todoItem: Todo, index: string) => (
-                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={editTask} />
+                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
         else {
             setTodoElements(tasks.filter((state: { getState: () => TodoState; }) => todoFilters.indexOf(state.getState()) != -1).map((todoItem: Todo, index: string) => (
-                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={editTask} />
+                <TodoItem key={"TodoItem" + index} todo={todoItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
     }
@@ -186,8 +187,11 @@ export default function HomeScreen() {
     }
 
     function formatDate(date: Date): string {
-        let value = date.getFullYear() + "-" + date.getMonth() + "-" + date.getDate();
-        console.log(value);
+        let monthNum = date.getMonth() + 1;
+        let monthFormatted = monthNum <= 9 ? "0" + monthNum.toString() : monthNum.toString(); 
+        let dateNum = date.getDate();
+        let dateFormatted = dateNum <= 9 ? "0" + dateNum.toString() : dateNum.toString();
+        let value = date.getFullYear() + "-" + monthFormatted + "-" + dateFormatted;
         return value;
     }
 
@@ -195,22 +199,57 @@ export default function HomeScreen() {
         let newTasks = tasks;
         newTasks.push(new Todo(tasks.length, state?.title, state?.category, state?.priority, state?.end_date, state?.start_date))
         setTasks(newTasks);
-        dispatch({ type: 'change_title', title: ""});
-        dispatch({ type: 'change_category', category: TodoCategory.Design});
-        dispatch({ type: 'change_priority', priority: TodoPriority.Medium});
-        dispatch({ type: 'change_start_date', start_date: new Date()});
-        dispatch({ type: 'change_end_date', end_date: new Date()});
+        resetDispatch();
         updateTodoElements();
         toggleCreateTask();
     }
 
-    function editTask(task: Todo) {
+    function deleteTask(task: Todo) {
+        let newTasks = tasks;
+        let currentTaskIndex = newTasks.indexOf(task);
+        newTasks.splice(currentTaskIndex, 1);
+        setTasks(newTasks);
+        updateTodoElements();
+    }
+
+    function startEditTask(task: Todo) {
+        setEditingTask(task);
         dispatch({ type: 'change_title', title: task.getTitle()});
         dispatch({ type: 'change_category', category: task.getCategory()});
         dispatch({ type: 'change_priority', priority: task.getPriority()});
         dispatch({ type: 'change_start_date', start_date: task.getStartDate()});
         dispatch({ type: 'change_end_date', end_date: task.getGoalDate()});
         toggleCreateTask();
+    }
+
+    function editTask() {
+        if (editingTask) {
+            resetDispatch();
+            let newTasks = tasks;
+            let currentTaskIndex = newTasks.indexOf(editingTask);
+            newTasks[currentTaskIndex] = new Todo(editingTask.getId(), state?.title, state?.category, state?.priority, state?.end_date, state?.start_date, editingTask.getProgress());
+            setTasks(newTasks);
+            updateTodoElements();
+            toggleCreateTask();
+            setEditingTask(undefined);
+        }
+    }
+
+    function resetDispatch() {
+        dispatch({ type: 'change_title', title: ""});
+        dispatch({ type: 'change_category', category: TodoCategory.Design});
+        dispatch({ type: 'change_priority', priority: TodoPriority.Medium});
+        dispatch({ type: 'change_start_date', start_date: new Date()});
+        dispatch({ type: 'change_end_date', end_date: new Date()});
+    }
+
+    function getCreateTaskButton() {
+        if (editingTask) {
+            return (<button className="createTaskButton" onClick={editTask}>Edit</button>)
+        }
+        else {
+            return (<button className="createTaskButton" onClick={createTask}>Create</button>)
+        }
     }
 
     useEffect(() => {
@@ -303,7 +342,7 @@ export default function HomeScreen() {
                                 <input className="createTaskInput" id="createTaskGoal" value={formatDate(state?.end_date)} type="date" onChange={(event) => dispatch({ type: 'change_end_date', end_date: new Date(event.target.value)})} />
                             </div>
                         </div>
-                        <button className="createTaskButton" onClick={createTask}>Create</button>
+                        {getCreateTaskButton()}
                     </div>
                     <div className="homeFooter">
                         <NavigationButton src={homeSvg} selectedSrc={homeSelectedSvg} selected={true} onClick={() => navigate("/home")} />

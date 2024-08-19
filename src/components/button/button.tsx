@@ -1,10 +1,17 @@
 import "./button.css";
 
-export default function Button({title, onClick=() => {}, inverted = false, img = ""}: {title: string, onClick?: () => void, inverted?: boolean, img?: string}) {
+export default function Button({title, onClick=() => {}, inverted = false, submit = false, img = ""}: {title: string, onClick?: () => void, inverted?: boolean, submit?: boolean, img?: string}) {
+    function submitContent() {
+        console.log("Submit");
+        if (submit) {
+            onClick();
+        }
+    }
+    
     function getContent() {
         if (img.length > 0) {
             return (
-                <button className={inverted ? "inverted" : "button"} onClick={onClick}>
+                <button className={inverted ? "inverted" : "button"} onClick={onClick} onSubmit={submitContent}>
                     <img src={img} alt="Back button" />
                     {title}
                     <div></div>
@@ -13,7 +20,7 @@ export default function Button({title, onClick=() => {}, inverted = false, img =
         }
         else {
             return (
-                <button className={inverted ? "inverted" : "button"} onClick={onClick}>
+                <button className={inverted ? "inverted" : "button"} onClick={onClick} onSubmit={submitContent}>
                     {title}
                 </button>
             )

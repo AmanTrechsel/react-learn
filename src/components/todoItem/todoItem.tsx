@@ -11,7 +11,7 @@ import "./todoItem.css";
 import { useContext, useEffect, useRef, useState } from "react";
 import { UsersContext } from "../../contexts/users/usersContext";
 
-export default function TodoItem({todo, editFunction}: {todo: Todo, editFunction: (task: Todo) => void}) {
+export default function TodoItem({todo, editFunction, deleteFunction}: {todo: Todo, editFunction: (task: Todo) => void, deleteFunction: (task: Todo) => void}) {
     const title = todo.getTitle();
     const category = todo.getCategory();
     const priority = todo.getPriority();
@@ -179,7 +179,7 @@ export default function TodoItem({todo, editFunction}: {todo: Todo, editFunction
                 </button>
                 <div ref={moreDropdown} className="todoMoreDropdown">
                     <button className="moreButton" onClick={() => editFunction(todo)}>Edit</button>
-                    <button className="moreButton delete">Delete</button>
+                    <button className="moreButton delete" onClick={() => deleteFunction(todo)}>Delete</button>
                 </div>
                 <div className={"todoPriorityWrapper "+getPriorityName()}>
                     <p className="todoPriority">{getPriorityName()}</p>
