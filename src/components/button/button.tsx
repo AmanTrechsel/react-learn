@@ -1,9 +1,9 @@
 import "./button.css";
 
-export default function Button({title, onClick=() => {}, inverted = false, submit = false, img = ""}: {title: string, onClick?: () => void, inverted?: boolean, submit?: boolean, img?: string}) {
-    function submitContent() {
+export default function Button({title, onClick = () => {}, inverted = false, submit = false, img = ""}: {title: string, onClick?: (event: any) => void, inverted?: boolean, submit?: boolean, img?: string}) {
+    function submitContent(event: any) {
         if (submit) {
-            onClick();
+            onClick(event);
         }
     }
     

@@ -51,7 +51,7 @@ export default function SearchBar({onChange, onSearchResult}: {onChange?: (value
         let tempSearchResults: JSX.Element[] = [];
         let resultIndices: number[] = [];
         let index = 0;
-        for (let taskItem of updater.getTasks()) {
+        for (let taskItem of updater.getTasks(updater)) {
             if (tempSearchResults.length >= maxResults) {
                 break;
             }

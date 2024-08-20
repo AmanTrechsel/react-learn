@@ -10,8 +10,9 @@ export default class Task {
     private readonly progress: number;
     private readonly startDate: Date;
     private readonly goalDate: Date;
+    private readonly users: number[]
 
-    public constructor(id: number, title: string = "", category: TaskCategory, priority: TaskPriority, goalDate: Date, startDate?: Date, progress?: number) {
+    public constructor(id: number, title: string = "", category: TaskCategory, priority: TaskPriority, goalDate: Date, startDate?: Date, progress?: number, users?: number[]) {
         this.id = id;
         this.title = title;
         this.category = category;
@@ -19,6 +20,7 @@ export default class Task {
         this.progress = (progress ? progress : 0);
         this.startDate = (startDate ? startDate : new Date());
         this.goalDate = goalDate;
+        this.users = (users ? users : []);
     }
 
     public getId(): number {
@@ -49,7 +51,26 @@ export default class Task {
         return this.goalDate;
     }
 
+    public getUsers(): number[] {
+        return this.users;
+    }
+
     public getState(): TaskState {
         return this.progress > 0 ? this.progress >= 100 ? TaskState.Completed : TaskState.InProgress : TaskState.NotStarted;
+    }
+
+    public hasUser(userId: number): boolean {
+        return this.users.indexOf(userId) != -1;
+    }
+
+    public appendUser(userId: number) {
+        this.users.push(userId);
+    }
+
+    public removeUser(userId: number) {
+        var index = this.users.indexOf(userId);
+        if (index > -1) {
+            this.users.splice(index, 1);
+        }
     }
 }

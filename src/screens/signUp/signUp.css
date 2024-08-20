@@ -62,3 +62,9 @@
     cursor: pointer;
     color: var(--primary);
 }
+
+.inputFieldGroup {
+    display: flex;
+    flex-direction: row;
+    gap: 25px;
+}

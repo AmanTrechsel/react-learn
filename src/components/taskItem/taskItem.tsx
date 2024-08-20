@@ -7,12 +7,10 @@ import ProgressBar from "../progressBar/progressBar";
 import UserIcon from "../userIcon/userIcon";
 import Task from "../../classes/task/task";
 import User from "../../classes/user/user";
-import Button from "../button/button";
 
 import "./taskItem.css";
 
-
-export default function TaskItem({task, editFunction, deleteFunction}: {task: Task, editFunction: (task: Task) => void, deleteFunction: (task: Task) => void}) {
+export default function TaskItem({ task, editFunction, deleteFunction }: { task: Task, editFunction: (task: Task) => void, deleteFunction: (task: Task) => void }) {
     const title = task.getTitle();
     const category = task.getCategory();
     const priority = task.getPriority();
@@ -38,26 +36,26 @@ export default function TaskItem({task, editFunction, deleteFunction}: {task: Ta
     function getCategoryName() {
         switch (category) {
             case TaskCategory.Design:
-                return ( <h3 className="categoryDesign">Design</h3> );
+                return (<h3 className="categoryDesign">Design</h3>);
             case TaskCategory.Code:
-                return ( <h3 className="categoryCode">Code</h3> );
+                return (<h3 className="categoryCode">Code</h3>);
             case TaskCategory.Test:
-                return ( <h3 className="categoryTest">Test</h3> );
+                return (<h3 className="categoryTest">Test</h3>);
             case TaskCategory.Implement:
-                return ( <h3 className="categoryImplement">Implement</h3> );
+                return (<h3 className="categoryImplement">Implement</h3>);
             case TaskCategory.Refactor:
-                return ( <h3 className="categoryRefactor">Refactor</h3> );
+                return (<h3 className="categoryRefactor">Refactor</h3>);
         }
     }
 
     function getStateName() {
         switch (state) {
             case TaskState.Completed:
-                return ( <h3 className="taskState">Completed</h3> );
+                return (<h3 className="taskState">Completed</h3>);
             case TaskState.InProgress:
-                return ( <h3 className="taskState">Progress</h3> );
+                return (<h3 className="taskState">Progress</h3>);
             case TaskState.NotStarted:
-                return ( <h3 className="taskState">Not Started</h3> );
+                return (<h3 className="taskState">Not Started</h3>);
         }
     }
 
@@ -107,16 +105,16 @@ export default function TaskItem({task, editFunction, deleteFunction}: {task: Ta
         }
     }
 
-    function updateAssignedUsers() {
-        let filteredUsers = updater.getUsers().filter((user: User) => user.hasTask(task.getId()));
+    async function updateAssignedUsers() {
+        let filteredUsers = await updater.getUsers(updater).filter((user: User) => task.hasUser(user.getId()));
         setAssignedUsers(filteredUsers.map((user: User, index: string) => (
-                <UserIcon key={"UserIcon" + index} user={user} />
-            )
+            <UserIcon key={"UserIcon" + index} user={user} />
+        )
         ));
     }
 
-    function updateNonAssigned() {
-        let nonAssigned = updater.getUsers().filter((user: User) => !user.hasTask(task.getId()));
+    async function updateNonAssigned() {
+        let nonAssigned = await updater.getUsers(updater).filter((user: User) => !task.hasUser(user.getId()));
         setNonAssignedUsersButtons(nonAssigned.map((user: User, index: string) => (
             <button key={"nonAssignedUserButton" + index} className="nonAssignedUser" onClick={() => addAssignedUser(user)}>{user.getFullName()}</button>
         )));
@@ -130,12 +128,14 @@ export default function TaskItem({task, editFunction, deleteFunction}: {task: Ta
 
     function addAssignedUser(user: User) {
         addAssignedUsersDropdown.current.classList.remove("open");
-        user.appendTask(task.getId());
-        updateNonAssigned();
-        updateAssignedUsers();
-        if (addAssignedUsersDropdown.current.children.length <= 1) {
-            addAssignedUserButton.current.style.display = "none";
-        }
+        task.appendUser(user.getId());
+        updater.updateTask(updater, task.getId(), task).then(() => {
+            updateNonAssigned();
+            updateAssignedUsers();
+            if (addAssignedUsersDropdown.current.children.length <= 1) {
+                addAssignedUserButton.current.style.display = "none";
+            }
+        })
     }
 
     function toggleMore() {
@@ -182,7 +182,7 @@ export default function TaskItem({task, editFunction, deleteFunction}: {task: Ta
                     <button className="moreButton" onClick={() => editFunction(task)}>Edit</button>
                     <button className="moreButton delete" onClick={() => deleteFunction(task)}>Delete</button>
                 </div>
-                <div className={"taskPriorityWrapper "+getPriorityName()}>
+                <div className={"taskPriorityWrapper " + getPriorityName()}>
                     <p className="taskPriority">{getPriorityName()}</p>
                 </div>
             </div>

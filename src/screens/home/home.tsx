@@ -124,12 +124,12 @@ export default function HomeScreen() {
             )));
         }
         else if (taskFilters.length === 0) {
-            setTaskElements(updater.getTasks().map((taskItem: Task, index: string) => (
+            setTaskElements(updater.getTasks(updater).map((taskItem: Task, index: string) => (
                 <TaskItem key={"TaskItem" + index} task={taskItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
         else {
-            setTaskElements(updater.getTasks().filter((state: { getState: () => TaskState; }) => taskFilters.indexOf(state.getState()) != -1).map((taskItem: Task, index: string) => (
+            setTaskElements(updater.getTasks(updater).filter((state: { getState: () => TaskState; }) => taskFilters.indexOf(state.getState()) != -1).map((taskItem: Task, index: string) => (
                 <TaskItem key={"TaskItem" + index} task={taskItem} editFunction={startEditTask} deleteFunction={deleteTask} />
             )));
         }
@@ -156,7 +156,7 @@ export default function HomeScreen() {
             setSearchResults([]);
         }
         else {
-            setSearchResults(resultIndices.map((value) => (updater.getTasks()[value])));
+            setSearchResults(resultIndices.map((value) => (updater.getTasks(updater)[value])));
         }
         setSelectedResult(undefined);
         updateTaskElements();
@@ -196,17 +196,21 @@ export default function HomeScreen() {
         return value;
     }
 
-    function createTask() {
-        var newTask = new Task(updater.getTasks().length, state?.title, state?.category, state?.priority, state?.endDate, state?.startDate);
-        updater.appendTask(updater, newTask);
-        resetDispatch();
-        updateTaskElements();
-        toggleCreateTask();
+    async function createTask() {
+        var newTask = new Task(updater.getTasks(updater).length, state?.title, state?.category, state?.priority, state?.endDate, state?.startDate);
+        updater.appendTask(updater, newTask).then((newUpdater: Updater) => {
+            setUpdater(newUpdater);
+            resetDispatch();
+            updateTaskElements();
+            toggleCreateTask();
+        });
     }
 
     function deleteTask(task: Task) {
-        updater.removeTask(updater, task);
-        updateTaskElements();
+        updater.removeTask(updater, task.getId()).then(() => {
+            updateTaskElements();
+        })
+        
     }
 
     function startEditTask(task: Task) {
@@ -219,11 +223,11 @@ export default function HomeScreen() {
         toggleCreateTask();
     }
 
-    function editTask() {
+    async function editTask() {
         if (editingTask) {
             resetDispatch();
             let updatedTask = new Task(editingTask.getId(), state?.title, state?.category, state?.priority, state?.endDate, state?.startDate, editingTask.getProgress());
-            updater.updateTask(updater, editingTask, updatedTask);
+            await updater.updateTask(updater, editingTask.getId(), updatedTask);
             updateTaskElements();
             toggleCreateTask();
             setEditingTask(undefined);
@@ -254,7 +258,7 @@ export default function HomeScreen() {
         else {
             navigate("/sign-in")
         }
-    }, [taskFilters, searchResults, selectedResult, currentUser]);
+    }, [updater, taskFilters, searchResults, selectedResult, currentUser]);
 
     return (
         <div className="homeScreen">
